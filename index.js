@@ -3,7 +3,7 @@ const form = document.getElementById("search-form")
 document.addEventListener("DOMContentLoaded", ()=>{
     
     form.addEventListener("submit", renderSearch)
-
+    getLocation()
 })
 
 function renderSearch(event){
@@ -25,6 +25,6 @@ function renderSearch(event){
     .then(cityArr=>cityArr.forEach(city=>renderResult(city)))
 }
 
-function renderResult(city){
-    const resultsList = document.
-}
+// function renderResult(city){
+//     const resultsList = document.
+// }
