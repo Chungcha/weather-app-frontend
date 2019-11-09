@@ -26,5 +26,5 @@ function renderSearch(event){
 }
 
 function renderResult(city){
-    console.log(city)
+    const resultsList = document.
 }
