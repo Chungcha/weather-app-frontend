@@ -1,11 +1,9 @@
 const form = document.getElementById("search-form")
 
-function searchList () {
-    return document.querySelector("#search-list")
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    form.addEventListener("submit", fetchSearch)
+document.addEventListener("DOMContentLoaded", ()=>{
+    
+    form.addEventListener("submit", renderSearch)
+    getLocation()
 })
 
 function fetchSearch(event){
