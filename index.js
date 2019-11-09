@@ -1,8 +1,11 @@
 const form = document.getElementById("search-form")
 
+function searchList() {
+    return document.querySelector("#search-list")
+}
+
 document.addEventListener("DOMContentLoaded", ()=>{
-    
-    form.addEventListener("submit", renderSearch)
+    form.addEventListener("submit", fetchSearch)
     getLocation()
 })
 
@@ -56,6 +59,6 @@ function fetchLocation(event) {
     .then(forecastArr => renderForecast(forecastArr))
 }
 
-function renderForecast() {
-    console.log("hey")
+function renderForecast(forecastArr) {
+    forecastArr
 }
