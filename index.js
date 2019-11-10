@@ -2,7 +2,7 @@ const searchForm = document.querySelector("#search-form")
 
 const newUserForm = document.querySelector("#newuser-form")
 
-const logInForm = document.querySelector("login-form")
+const logInForm = document.querySelector("#login-form")
 
 function main() {
     return document.querySelector("main")
