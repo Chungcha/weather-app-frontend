@@ -1,4 +1,6 @@
-const form = document.getElementById("search-form")
+const searchForm = document.querySelector("#search-form")
+
+const loginForm = document.querySelector("#login-form")
 
 function main() {
     return document.querySelector("main")
@@ -9,21 +11,26 @@ function searchList() {
 }
 
 document.addEventListener("DOMContentLoaded", ()=>{
-    form.addEventListener("submit", submitHandler)
+
+    searchForm.addEventListener("submit", searchSubmitHandler)
+
+    loginForm.addEventListener("submit", loginSubmitHandler)
+
     getLocation()
+
 })
 
-function submitHandler(event){
+function searchSubmitHandler(event){
     event.preventDefault()
 
     searchList().innerHTML = ""
 
-    const searchValue = form.city.value
+    const searchValue = searchForm.city.value
 
-    fetchSearch(searchValue)
+    postSearch(searchValue)
 }
 
-function fetchSearch(searchValue) {
+function postSearch(searchValue) {
     fetch("http://localhost:3000/search", {
         method: "POST",
         headers: {
@@ -53,10 +60,10 @@ function clickHandler(event) {
 
     let woeid = event.target.dataset.woeid 
 
-    fetchLocation(woeid)
+    postLocation(woeid)
 }
 
-function fetchLocation(woeid) {
+function postLocation(woeid) {
     fetch("http://localhost:3000/location", {
         method: "POST",
         headers: {
@@ -90,4 +97,25 @@ function renderForecast(forecastArr) {
     main().append(div)
 
     div.append(subHeader, img, span)
+}
+
+function loginSubmitHandler(event) {
+    event.preventDefault()
+    
+    let username = loginForm.username.value
+
+    postUser(username)
+}
+
+function postUser(username) {
+    fetch("http://localhost:3000/users", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            "Accept": "application/json"
+        },
+    body: JSON.stringify({
+        username: username
+    })
+    })
 }
