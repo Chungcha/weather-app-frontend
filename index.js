@@ -4,6 +4,8 @@ const newUserForm = document.querySelector("#newuser-form")
 
 const logInForm = document.querySelector("#login-form")
 
+const favsList = document.querySelector("#favs-list")
+
 function main() {
     return document.querySelector("main")
 }
@@ -152,9 +154,21 @@ function postUser(username) {
     })
     })
     .then(response => response.json())
-    .then(resp => renderFavs(resp))
+    .then(resp=>console.log(resp))
+    // .then(resp => resp.forEach(resp=>postFavs(resp.location_id)))
 }
 
-function renderFavs(){
-    
-}
+// function postFavs(woeid){
+//     fetch("http://localhost:3000/location", {
+//         method: "POST",
+//         headers: {
+//             'Content-Type': 'application/json',
+//             "Accept": "application/json"
+//         },
+//     body: JSON.stringify({
+//         location_id: woeid
+//     })
+//     })
+//     .then(response => response.json())
+//     .then(forecastArr => console.log(forecastArr))
+// }
