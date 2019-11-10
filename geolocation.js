@@ -18,7 +18,6 @@ function fetchGeoLocation(position){
     const latitude = position["coords"]["latitude"].toFixed(2)
     const longitude = position["coords"]["longitude"].toFixed(2)
     const positionString = `${latitude},${longitude}`
-    
     fetch("http://localhost:3000/geolocation",{
         method: "POST",
         headers: {
