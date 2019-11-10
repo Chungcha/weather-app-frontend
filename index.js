@@ -1,8 +1,12 @@
 const searchForm = document.querySelector("#search-form")
+const searchButton = document.querySelector("#search-button")
 
 const newUserForm = document.querySelector("#newuser-form")
 
 const logInForm = document.querySelector("#login-form")
+const logInButton = document.querySelector("#login-button")
+
+const signUpButton = document.querySelector("#signup-button")
 
 function main() {
     return document.querySelector("main")
@@ -15,10 +19,14 @@ function searchList() {
 document.addEventListener("DOMContentLoaded", ()=>{
 
     searchForm.addEventListener("submit", searchSubmitHandler)
+    searchButton.addEventListener("click", searchSubmitHandler)
 
     newUserForm.addEventListener("submit", newUserSubmitHandler)
 
     logInForm.addEventListener("submit", logInSubmitHandler)
+    logInButton.addEventListener("click", logInSubmitHandler)
+
+    // signUpButton.addEventListener("click", )
 
     getLocation()
 
@@ -134,9 +142,9 @@ function welcomeMessage(userObj) {
 
 function logInSubmitHandler(event) {
     event.preventDefault()
-
+    
     let username = logInForm.username.value 
-
+    
     postUser(username)
 }
 
@@ -152,9 +160,9 @@ function postUser(username) {
     })
     })
     .then(response => response.json())
-    .then(resp => renderFavs(resp))
+    .then(resp => renderUser(resp))
 }
 
-function renderFavs(){
-    
+function renderUser(resp){
+    console.log(resp)
 }
