@@ -152,5 +152,9 @@ function postUser(username) {
     })
     })
     .then(response => response.json())
-    .then(resp => console.log(resp))
+    .then(resp => renderFavs(resp))
+}
+
+function renderFavs(){
+    
 }
