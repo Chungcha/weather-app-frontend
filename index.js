@@ -4,6 +4,10 @@ function main() {
     return document.querySelector("main")
 }
 
+function searchList() {
+    return document.querySelector("#search-list")
+}
+
 document.addEventListener("DOMContentLoaded", ()=>{
     form.addEventListener("submit", submitHandler)
     getLocation()
@@ -12,17 +16,14 @@ document.addEventListener("DOMContentLoaded", ()=>{
 function submitHandler(event){
     event.preventDefault()
 
-    main().innerHTML = ""
-
-    let ul = document.createElement("ul")
-    ul.id = "search-list"
+    searchList().innerHTML = ""
 
     const searchValue = form.city.value
 
-    fetchSearch(ul, searchValue)
+    fetchSearch(searchValue)
 }
 
-function fetchSearch(ul, searchValue) {
+function fetchSearch(searchValue) {
     fetch("http://localhost:3000/search", {
         method: "POST",
         headers: {
@@ -34,21 +35,21 @@ function fetchSearch(ul, searchValue) {
     })
     })
     .then(response => response.json())
-    .then(resultsArr => resultsArr.forEach(result => renderSearch(ul, result)))
+    .then(resultsArr => resultsArr.forEach(result => renderSearch(result)))
 }
 
-function renderSearch(ul, result){
+function renderSearch(result){
     let li = document.createElement("li")
     li.dataset.woeid = result.woeid
     li.innerText = result.title 
     li.addEventListener("click", clickHandler)
 
-    main().append(ul)
-    ul.append(li)
+    main().append(searchList())
+    searchList().append(li)
 }
 
 function clickHandler(event) {
-    main().innerHTML = ""
+    searchList().innerHTML = ""
 
     let woeid = event.target.dataset.woeid 
 
