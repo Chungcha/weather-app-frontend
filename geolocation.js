@@ -1,6 +1,3 @@
-const h2 = document.getElementById("h2");
-
-
 function getLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(fetchGeoLocation)
