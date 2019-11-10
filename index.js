@@ -1,6 +1,8 @@
 const searchForm = document.querySelector("#search-form")
 
-const loginForm = document.querySelector("#login-form")
+const newUserForm = document.querySelector("#newuser-form")
+
+const logInForm = document.querySelector("#login-form")
 
 function main() {
     return document.querySelector("main")
@@ -14,7 +16,9 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
     searchForm.addEventListener("submit", searchSubmitHandler)
 
-    loginForm.addEventListener("submit", loginSubmitHandler)
+    newUserForm.addEventListener("submit", newUserSubmitHandler)
+
+    logInForm.addEventListener("submit", logInSubmitHandler)
 
     getLocation()
 
@@ -71,7 +75,7 @@ function postLocation(woeid) {
             "Accept": "application/json"
         },
     body: JSON.stringify({
-        location: woeid
+        location_id: woeid
     })
     })
     .then(response => response.json())
@@ -99,10 +103,12 @@ function renderForecast(forecastArr) {
     div.append(subHeader, img, span)
 }
 
-function loginSubmitHandler(event) {
+function newUserSubmitHandler(event) {
     event.preventDefault()
     
-    let username = loginForm.username.value
+    // let div = document.querySelector("#login-div")
+    
+    let username = newUserForm.username.value
 
     postUser(username)
 }
@@ -118,4 +124,33 @@ function postUser(username) {
         username: username
     })
     })
+    .then(response => response.json())
+    .then(userObj => welcomeMessage(userObj))
+}
+
+function welcomeMessage(userObj) {
+    console.log(userObj)
+}
+
+function logInSubmitHandler(event) {
+    event.preventDefault()
+
+    let username = logInForm.username.value 
+
+    postUser(username)
+}
+
+function postUser(username) {
+    fetch(`http://localhost:3000/login`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            "Accept": "application/json"
+        },
+    body: JSON.stringify({
+        username: username
+    })
+    })
+    .then(response => response.json())
+    .then(resp => console.log(resp))
 }
