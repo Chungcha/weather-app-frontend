@@ -6,11 +6,6 @@ function getLocation() {
   }
 }
 
-function showPosition(position) {
-  h2.innerHTML = "Latitude: " + position.coords.latitude +
-  "<br>Longitude: " + position.coords.longitude;
-}
-
 function fetchGeoLocation(position){
     const latitude = position["coords"]["latitude"].toFixed(2)
     const longitude = position["coords"]["longitude"].toFixed(2)
