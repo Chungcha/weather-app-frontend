@@ -253,7 +253,7 @@ function renderTemps(forecastArr){
     div.innerHTML=`
     <div class="statistic">
         <div class="label">
-            ${convertTemp(todaysArr.max_temp)} ${convertTemp(todaysArr.min_temp)}
+           &#8593; ${convertTemp(todaysArr.max_temp)} &#8595;${convertTemp(todaysArr.min_temp)}
         </div>
         <div class="value">
             ${convertTemp(todaysArr.the_temp)}
@@ -263,10 +263,8 @@ function renderTemps(forecastArr){
         </div>
     </div>`
     div.classList.add("column", "field", "ui", "statistics")
-    // let p = document.createElement("p")
-    // p.innerText="hi"
-    // div.appendChild(p)
     weatherDiv.append(div)
+    
 }
 
 function convertTemp(celcius){
