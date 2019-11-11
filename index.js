@@ -1,8 +1,12 @@
 const searchForm = document.querySelector("#search-form")
+const searchButton = document.querySelector("#search-button")
 
 const newUserForm = document.querySelector("#newuser-form")
 
 const logInForm = document.querySelector("#login-form")
+const logInButton = document.querySelector("#login-button")
+
+const signUpButton = document.querySelector("#signup-button")
 
 const favsList = document.querySelector("#favs-list")
 
@@ -17,10 +21,14 @@ function searchList() {
 document.addEventListener("DOMContentLoaded", ()=>{
 
     searchForm.addEventListener("submit", searchSubmitHandler)
+    searchButton.addEventListener("click", searchSubmitHandler)
 
     newUserForm.addEventListener("submit", newUserSubmitHandler)
 
     logInForm.addEventListener("submit", logInSubmitHandler)
+    logInButton.addEventListener("click", logInSubmitHandler)
+
+    // signUpButton.addEventListener("click", )
 
     getLocation()
 
@@ -136,9 +144,9 @@ function welcomeMessage(userObj) {
 
 function logInSubmitHandler(event) {
     event.preventDefault()
-
+    
     let username = logInForm.username.value 
-
+    
     postUser(username)
 }
 
@@ -154,21 +162,28 @@ function postUser(username) {
     })
     })
     .then(response => response.json())
-    .then(resp=>console.log(resp))
-    // .then(resp => resp.forEach(resp=>postFavs(resp.location_id)))
+    .then(resp => {
+        debugger
+        resp.forEach(resp=>postFavs(resp.location_id))})
 }
 
-// function postFavs(woeid){
-//     fetch("http://localhost:3000/location", {
-//         method: "POST",
-//         headers: {
-//             'Content-Type': 'application/json',
-//             "Accept": "application/json"
-//         },
-//     body: JSON.stringify({
-//         location_id: woeid
-//     })
-//     })
-//     .then(response => response.json())
-//     .then(forecastArr => console.log(forecastArr))
+// // function postFavs(woeid){
+// //     fetch("http://localhost:3000/location", {
+// //         method: "POST",
+// //         headers: {
+// //             'Content-Type': 'application/json',
+// //             "Accept": "application/json"
+// //         },
+// //     body: JSON.stringify({
+// //         location_id: woeid
+// //     })
+// //     })
+// //     .then(response => response.json())
+// //     .then(forecastArr => console.log(forecastArr))
+// // }
+//     .then(resp => renderUser(resp))
+// }
+
+// function renderUser(resp){
+//     console.log(resp)
 // }
