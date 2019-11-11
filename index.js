@@ -184,6 +184,7 @@ function favoriteHandler(favorite) {
 }
 
 function postFavoriteLocation(favorite) {
+    
     fetch("http://localhost:3000/location", {
         method: "POST",
         headers: {
@@ -213,7 +214,7 @@ function renderFavoriteLocation(fave) {
     let headerDiv = document.createElement("div")
     headerDiv.className = "header"
     headerDiv.innerText = `${fave.title}`
-
+    
     favorites.append(itemDiv)
     itemDiv.append(img, contentDiv)
     contentDiv.append(headerDiv)
