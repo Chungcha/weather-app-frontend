@@ -249,7 +249,7 @@ function signUpClickHandler(event) {
 function renderTemps(forecastArr){
     const todaysArr = forecastArr.consolidated_weather[0]
     let div = document.createElement("div")
-    debugger
+    
     div.innerHTML=`
     <div class="statistic">
         <div class="label">
