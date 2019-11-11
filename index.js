@@ -163,7 +163,9 @@ function postExistingUser(username) {
     })
     })
     .then(response => response.json())
-    .then(resp => renderUser(resp))
+    .then(resp => {
+        debugger
+        resp.forEach(resp=>postFavs(resp.location_id))})
 }
 
 function renderUser(userObj){
