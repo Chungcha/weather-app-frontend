@@ -1,7 +1,19 @@
+<<<<<<< HEAD
 p {
 color: red;
 }
 
 #favorites-column {
     display: none
+=======
+#main-container{
+    margin-top: 110px;
+    margin-left: 70px;
+    margin-right: 70px;
+}
+
+#main-image{
+    width: 200px;
+    height: auto;
+>>>>>>> a5582f7c20705e3943a4105b80038d14d12845e0
 }

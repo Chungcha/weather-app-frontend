@@ -66,7 +66,7 @@ function postSearch(searchValue) {
 function renderSearch(result){
     let li = document.createElement("li")
     li.dataset.woeid = result.woeid
-    li.innerText = result.title 
+    li.innerText = result.title
     li.addEventListener("click", clickHandler)
 
     searchList().append(li)
@@ -96,26 +96,26 @@ function postLocation(woeid) {
 }
 
 function renderForecast(forecastArr) {
+    
     weatherDiv.innerHTML = ""
 
     let currentForecast = forecastArr.consolidated_weather[0] 
 
-    let weatherState = currentForecast.weather_state_name
-
     let div = document.createElement("div")
+    div.classList.add("column", "field")
 
-    let subHeader = document.createElement("h3")
-    subHeader.innerText = `${forecastArr.title}`
-
-    let span = document.createElement("span")
-    span.innerText = weatherState
+    let subHeader = document.getElementById("subHeader")
+    subHeader.innerText = `${forecastArr.title}, ${forecastArr.parent.title}`
 
     let img = document.createElement("img")
+    img.id = "main-image"
     img.src = `https://www.metaweather.com/static/img/weather/${currentForecast.weather_state_abbr}.svg`
 
     weatherDiv.append(div)
 
-    div.append(subHeader, img, span)
+    div.append(img)
+
+    renderTemps(forecastArr)
 }
 
 function newUserSubmitHandler(event) {
@@ -189,6 +189,7 @@ function favoriteHandler(favorite) {
 }
 
 function postFavoriteLocation(favorite) {
+    
     fetch("http://localhost:3000/location", {
         method: "POST",
         headers: {
@@ -218,7 +219,7 @@ function renderFavoriteLocation(fave) {
     let headerDiv = document.createElement("div")
     headerDiv.className = "header"
     headerDiv.innerText = `${fave.title}`
-
+    
     favorites.append(itemDiv)
     itemDiv.append(img, contentDiv)
     contentDiv.append(headerDiv)
@@ -243,5 +244,32 @@ function signUpClickHandler(event) {
     div.innerText = "Sign Up"
 
     newUserButton.append(div)
+}
+
+function renderTemps(forecastArr){
+    const todaysArr = forecastArr.consolidated_weather[0]
+    let div = document.createElement("div")
+    debugger
+    div.innerHTML=`
+    <div class="statistic">
+        <div class="label">
+            ${convertTemp(todaysArr.max_temp)} ${convertTemp(todaysArr.min_temp)}
+        </div>
+        <div class="value">
+            ${convertTemp(todaysArr.the_temp)}
+         </div>
+        <div class="label">
+             ${todaysArr.weather_state_name}
+        </div>
+    </div>`
+    div.classList.add("column", "field", "ui", "statistics")
+    // let p = document.createElement("p")
+    // p.innerText="hi"
+    // div.appendChild(p)
+    weatherDiv.append(div)
+}
+
+function convertTemp(celcius){
+    return `${ Math.round(celcius*(9/5)+32)}°F`
 }
         
