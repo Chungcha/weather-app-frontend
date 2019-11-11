@@ -12,6 +12,8 @@ const signUpButton = document.querySelector("#signup-button")
 
 const weatherDiv = document.querySelector("#weather-div")
 
+let favoritesColumn = document.querySelector("#favorites-column")
+
 function main() {
     return document.querySelector("main")
 }
@@ -169,7 +171,12 @@ function postExistingUser(username) {
 function renderUser(userObj){
     welcomeMessage(userObj)
     let favorites = userObj.favorites 
-    favorites.forEach(favorite => favoriteHandler(favorite))
+    if (userObj.favorites === undefined) {
+        console.log("no favorites yet")
+    } else {
+        favorites.forEach(favorite => favoriteHandler(favorite))
+        favoritesColumn.style.display = "inline-block"
+    }
 }
 
 function welcomeMessage(userObj) {
@@ -196,7 +203,7 @@ function postFavoriteLocation(favorite) {
     .then(fave => renderFavoriteLocation(fave))
 }
 
-function renderFavoriteLocation(fave) { 
+function renderFavoriteLocation(fave) {
     let itemDiv = document.createElement("div")
     itemDiv.className = "item"
 
