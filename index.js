@@ -14,6 +14,8 @@ const weatherDiv = document.querySelector("#weather-div")
 
 let favoritesColumn = document.querySelector("#favorites-column")
 
+const fiveDayDiv = document.getElementById("five-day-forcast")
+
 function main() {
     return document.querySelector("main")
 }
@@ -253,10 +255,10 @@ function renderTemps(forecastArr){
     div.innerHTML=`
     <div class="statistic">
         <div class="label">
-           &#8593; ${convertTemp(todaysArr.max_temp)} &#8595;${convertTemp(todaysArr.min_temp)}
+           &#8593; ${convertTemp(todaysArr.max_temp)}° &#8595; ${convertTemp(todaysArr.min_temp)}°
         </div>
         <div class="value">
-            ${convertTemp(todaysArr.the_temp)}
+            ${convertTemp(todaysArr.the_temp)}°F
          </div>
         <div class="label">
              ${todaysArr.weather_state_name}
@@ -264,10 +266,47 @@ function renderTemps(forecastArr){
     </div>`
     div.classList.add("column", "field", "ui", "statistics")
     weatherDiv.append(div)
-    
+    renderFiveDay(forecastArr)
 }
 
 function convertTemp(celcius){
-    return `${ Math.round(celcius*(9/5)+32)}°F`
+    return `${ Math.round(celcius*(9/5)+32)}`
 }
         
+function renderFiveDay(forecastArr){
+    const fiveDayArr = forecastArr.consolidated_weather.slice(1,6)
+    fiveDayArr.forEach(eachDay=>{
+        
+        let div = document.createElement("div")
+        div.classList.add("card", "statistic")
+
+        let value= document.createElement("div")
+        value.classList.add("value")
+        // value.innerText= `${convertTemp(eachDay.the_temp)}°F`
+        div.appendChild(value)
+
+        let text = document.createTextNode(`${convertTemp(eachDay.the_temp)}°F`)
+
+        let image=document.createElement("img")
+        image.classList.add("ui", "circular", "inline", "image")
+        image.src="https://www.metaweather.com/static/img/weather/ico/sn.ico"
+        value.appendChild(image)
+        value.appendChild(text)
+        
+        let day = document.createElement("div")
+        day.classList.add("label")
+        //getting day
+        day.innerText=`${getDay(eachDay.applicable_date)}`
+
+        div.appendChild(day)
+        fiveDayDiv.appendChild(div)
+    })
+    // remember to clear out the div everytime cards are generated
+}
+
+function getDay(dateString){
+    const dateArray = dateString.split("-")
+    let weekday = date.getDay();
+    debugger
+    return weekday
+}
