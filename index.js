@@ -1,14 +1,16 @@
 const searchForm = document.querySelector("#search-form")
-const searchButton = document.querySelector("#search-button")
+
+const userForm = document.querySelector("#user-form")
 
 const newUserForm = document.querySelector("#newuser-form")
+const newUserButton = document.querySelector("#newuser-button")
 
 const logInForm = document.querySelector("#login-form")
 const logInButton = document.querySelector("#login-button")
 
 const signUpButton = document.querySelector("#signup-button")
 
-const favsList = document.querySelector("#favs-list")
+const weatherDiv = document.querySelector("#weather-div")
 
 function main() {
     return document.querySelector("main")
@@ -21,14 +23,14 @@ function searchList() {
 document.addEventListener("DOMContentLoaded", ()=>{
 
     searchForm.addEventListener("submit", searchSubmitHandler)
-    searchButton.addEventListener("click", searchSubmitHandler)
 
     newUserForm.addEventListener("submit", newUserSubmitHandler)
+    newUserButton.addEventListener("click", newUserSubmitHandler)
 
     logInForm.addEventListener("submit", logInSubmitHandler)
     logInButton.addEventListener("click", logInSubmitHandler)
 
-    // signUpButton.addEventListener("click", )
+    signUpButton.addEventListener("click", signUpClickHandler)
 
     getLocation()
 
@@ -65,7 +67,6 @@ function renderSearch(result){
     li.innerText = result.title 
     li.addEventListener("click", clickHandler)
 
-    main().append(searchList())
     searchList().append(li)
 }
 
@@ -93,6 +94,8 @@ function postLocation(woeid) {
 }
 
 function renderForecast(forecastArr) {
+    weatherDiv.innerHTML = ""
+
     let currentForecast = forecastArr.consolidated_weather[0] 
 
     let weatherState = currentForecast.weather_state_name
@@ -100,7 +103,7 @@ function renderForecast(forecastArr) {
     let div = document.createElement("div")
 
     let subHeader = document.createElement("h3")
-    subHeader.innerText = "Today"
+    subHeader.innerText = `${forecastArr.title}`
 
     let span = document.createElement("span")
     span.innerText = weatherState
@@ -108,22 +111,22 @@ function renderForecast(forecastArr) {
     let img = document.createElement("img")
     img.src = `https://www.metaweather.com/static/img/weather/${currentForecast.weather_state_abbr}.svg`
 
-    main().append(div)
+    weatherDiv.append(div)
 
     div.append(subHeader, img, span)
 }
 
 function newUserSubmitHandler(event) {
     event.preventDefault()
-    
-    // let div = document.querySelector("#login-div")
-    
+
     let username = newUserForm.username.value
 
-    postUser(username)
+    postNewUser(username)
+
+    newUserForm.innerHTML = ""
 }
 
-function postUser(username) {
+function postNewUser(username) {
     fetch("http://localhost:3000/users", {
         method: "POST",
         headers: {
@@ -135,22 +138,20 @@ function postUser(username) {
     })
     })
     .then(response => response.json())
-    .then(userObj => welcomeMessage(userObj))
-}
-
-function welcomeMessage(userObj) {
-    console.log(userObj)
+    .then(userObj => renderUser(userObj))
 }
 
 function logInSubmitHandler(event) {
     event.preventDefault()
+
+    userForm.innerHTML = ""
     
     let username = logInForm.username.value 
     
-    postUser(username)
+    postExistingUser(username)
 }
 
-function postUser(username) {
+function postExistingUser(username) {
     fetch(`http://localhost:3000/users/login`, {
         method: "POST",
         headers: {
@@ -167,23 +168,75 @@ function postUser(username) {
         resp.forEach(resp=>postFavs(resp.location_id))})
 }
 
-// // function postFavs(woeid){
-// //     fetch("http://localhost:3000/location", {
-// //         method: "POST",
-// //         headers: {
-// //             'Content-Type': 'application/json',
-// //             "Accept": "application/json"
-// //         },
-// //     body: JSON.stringify({
-// //         location_id: woeid
-// //     })
-// //     })
-// //     .then(response => response.json())
-// //     .then(forecastArr => console.log(forecastArr))
-// // }
-//     .then(resp => renderUser(resp))
-// }
+function renderUser(userObj){
+    welcomeMessage(userObj)
+    let favorites = userObj.favorites 
+    favorites.forEach(favorite => favoriteHandler(favorite))
+}
 
-// function renderUser(resp){
-//     console.log(resp)
-// }
+function welcomeMessage(userObj) {
+    let welcomeMessage = document.querySelector("#welcome-message")
+    welcomeMessage.innerText = `Welcome ${userObj.username}`
+}
+
+function favoriteHandler(favorite) {
+    postFavoriteLocation(favorite)
+}
+
+function postFavoriteLocation(favorite) {
+    fetch("http://localhost:3000/location", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            "Accept": "application/json"
+        },
+    body: JSON.stringify({
+        location_id: favorite.location_id
+    })
+    })
+    .then(response => response.json())
+    .then(fave => renderFavoriteLocation(fave))
+}
+
+function renderFavoriteLocation(fave) { 
+    let itemDiv = document.createElement("div")
+    itemDiv.className = "item"
+
+    let img = document.createElement("img")
+    img.className = "ui avatar image"
+    let forecastImg = fave.consolidated_weather[0].weather_state_abbr
+    img.src =  `https://www.metaweather.com/static/img/weather/${forecastImg}.svg`
+
+    let contentDiv = document.createElement("div")
+    contentDiv.className = "content"
+
+    let headerDiv = document.createElement("div")
+    headerDiv.className = "header"
+    headerDiv.innerText = `${fave.title}`
+
+    favorites.append(itemDiv)
+    itemDiv.append(img, contentDiv)
+    contentDiv.append(headerDiv)
+}
+
+function signUpClickHandler(event) { 
+    userForm.innerHTML = ""
+
+    let input = document.createElement("input")
+    input.type = "text"
+    input.name = "username"
+    input.placeholder = "Username"
+
+    let i = document.createElement("i")
+    i.className = "user icon"
+
+    let left = document.querySelector(".ui.left.icon.input")
+    left.append(input, i)    
+    
+    let div = document.createElement("div")
+    div.className = "ui blue submit button"
+    div.innerText = "Sign Up"
+
+    newUserButton.append(div)
+}
+        
