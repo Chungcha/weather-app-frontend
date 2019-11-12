@@ -38,13 +38,13 @@ function clickHandler(event) {
     if (event.target.dataset.status==="favorited"){
         favorited = true
     }
-
+    let favoriteId = event.target.dataset.favoriteId
     let woeid = event.target.dataset.woeid 
 
-    postLocation(woeid, favorited)
+    postLocation(woeid, favorited, favoriteId)
 }
 
-function postLocation(woeid, favorited) {
+function postLocation(woeid, favorited, favoriteId) {
     fetch("http://localhost:3000/location", {
         method: "POST",
         headers: {
@@ -56,10 +56,10 @@ function postLocation(woeid, favorited) {
     })
     })
     .then(response => response.json())
-    .then(forecastArr => renderForecast(forecastArr, favorited))
+    .then(forecastArr => renderForecast(forecastArr, favorited, favoriteId))
 }
 
-function renderForecast(forecastArr, favorited) {
+function renderForecast(forecastArr, favorited, favoriteId) {
     
     weatherDiv.innerHTML = ""
 
@@ -71,7 +71,7 @@ function renderForecast(forecastArr, favorited) {
     let subHeader = document.getElementById("subHeader")
     subHeader.innerText = `${forecastArr.title}, ${forecastArr.parent.title}`
 
-    renderFavButton(forecastArr, favorited)
+    renderFavButton(forecastArr, favorited, favoriteId)
 
     let img = document.createElement("img")
     img.id = "main-image"
@@ -84,11 +84,12 @@ function renderForecast(forecastArr, favorited) {
     renderTemps(forecastArr)
 }
 
-function renderFavButton(forecastArr, favorited){
+function renderFavButton(forecastArr, favorited, favoriteId){
     if (login && favorited) {
         let span = document.createElement("span")
         span.id = "heart"
         span.dataset.woeid = forecastArr.woeid
+        span.dataset.favoriteId = favoriteId
         span.innerText = " ♥"
         subHeader.append(span)
         span.addEventListener("click", unfollow)
@@ -96,6 +97,7 @@ function renderFavButton(forecastArr, favorited){
     let span = document.createElement("span")
     span.id = "heart"
     span.dataset.woeid = forecastArr.woeid
+    span.dataset.favoriteId = favoriteId
     span.innerText = " ♡"
     subHeader.append(span)
     span.addEventListener("click", follow)
@@ -176,10 +178,33 @@ function getDay(dateString){
 }
 
 function unfollow(event){
-    
-    fetch()
+    event.target.innerText= " ♡"
+    const favId = event.target.dataset.favoriteId
+    let el = document.querySelector(`div.header[data-favorite-id='${favId}']`)
+    el.parentElement.parentElement.remove()
+    fetch(`http://localhost:3000/favorites/${favId}`,{
+        method: "DELETE"
+    })
 }
 
 function follow(event){
-    console.log("THis works")
+    const userId = login
+    const woeId = event.target.dataset.woeid
+    const favId = event.target.dataset.favoriteId
+
+    fetch("http://localhost:3000/favorites",{
+        method: "POST",
+        headers:{
+            'Content-Type': 'application/json',
+            "Accept": "application/json"
+        },
+        body: JSON.stringify({
+            userId: userId,
+            woeId: woeId
+        })
+    })
+    .then(response => response.json())
+    .then(favorite => {
+        event.target.innerText = " ♥"
+        favoriteHandler(favorite, favorite.id)})
 }

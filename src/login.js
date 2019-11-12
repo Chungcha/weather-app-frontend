@@ -30,7 +30,8 @@ function renderUser(userObj){
     if (userObj.favorites === undefined) {
         console.log("no favorites yet")
     } else {
-        favorites.forEach(favorite => favoriteHandler(favorite))
+        
+        favorites.forEach(favorite => favoriteHandler(favorite, favorite.id))
         favoritesColumn.style.display = "inline-block"
     }
     renderLogOutButton()
@@ -41,11 +42,11 @@ function welcomeMessage(userObj) {
     welcomeMessage.innerText = `Welcome ${userObj.username}`
 }
 
-function favoriteHandler(favorite) {
-    postFavoriteLocation(favorite)
+function favoriteHandler(favorite, favoriteId) {
+    postFavoriteLocation(favorite, favoriteId)
 }
 
-function postFavoriteLocation(favorite) {
+function postFavoriteLocation(favorite, favoriteId) {
     
     fetch("http://localhost:3000/location", {
         method: "POST",
@@ -58,10 +59,10 @@ function postFavoriteLocation(favorite) {
     })
     })
     .then(response => response.json())
-    .then(fave => renderFavoriteLocation(fave))
+    .then(fave => renderFavoriteLocation(fave, favoriteId))
 }
 
-function renderFavoriteLocation(fave) {
+function renderFavoriteLocation(fave, favoriteId) {
     let itemDiv = document.createElement("div")
     itemDiv.className = "item"
 
@@ -77,6 +78,7 @@ function renderFavoriteLocation(fave) {
     headerDiv.className = "header"
     headerDiv.dataset.woeid = fave.woeid
     headerDiv.dataset.status = "favorited"
+    headerDiv.dataset.favoriteId = favoriteId
     headerDiv.innerText = `${fave.title}`
     
     
