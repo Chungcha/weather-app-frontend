@@ -34,13 +34,17 @@ function renderSearch(result){
 
 function clickHandler(event) {
     searchList().innerHTML = ""
+    let favorited
+    if (event.target.dataset.status==="favorited"){
+        favorited = true
+    }
 
     let woeid = event.target.dataset.woeid 
 
-    postLocation(woeid)
+    postLocation(woeid, favorited)
 }
 
-function postLocation(woeid) {
+function postLocation(woeid, favorited) {
     fetch("http://localhost:3000/location", {
         method: "POST",
         headers: {
@@ -52,10 +56,10 @@ function postLocation(woeid) {
     })
     })
     .then(response => response.json())
-    .then(forecastArr => renderForecast(forecastArr))
+    .then(forecastArr => renderForecast(forecastArr, favorited))
 }
 
-function renderForecast(forecastArr) {
+function renderForecast(forecastArr, favorited) {
     
     weatherDiv.innerHTML = ""
 
@@ -67,12 +71,7 @@ function renderForecast(forecastArr) {
     let subHeader = document.getElementById("subHeader")
     subHeader.innerText = `${forecastArr.title}, ${forecastArr.parent.title}`
 
-
-    // OWN FUNCTION? WITH LOGIN RENDER FAVS?
-    let span = document.createElement("span")
-    span.id = "heart"
-    span.innerText = " ♡"
-    subHeader.append(span)
+    renderFavButton(forecastArr, favorited)
 
     let img = document.createElement("img")
     img.id = "main-image"
@@ -83,6 +82,24 @@ function renderForecast(forecastArr) {
     div.append(img)
 
     renderTemps(forecastArr)
+}
+
+function renderFavButton(forecastArr, favorited){
+    if (login && favorited) {
+        let span = document.createElement("span")
+        span.id = "heart"
+        span.dataset.woeid = forecastArr.woeid
+        span.innerText = " ♥"
+        subHeader.append(span)
+        span.addEventListener("click", unfollow)
+    } else if (login) {
+    let span = document.createElement("span")
+    span.id = "heart"
+    span.dataset.woeid = forecastArr.woeid
+    span.innerText = " ♡"
+    subHeader.append(span)
+    span.addEventListener("click", follow)
+    }
 }
 
 function renderTemps(forecastArr){
@@ -156,4 +173,13 @@ function getDay(dateString){
     let options = { weekday: 'long'}
     let newWeekday = new Intl.DateTimeFormat('en-US', options).format(date)
     return newWeekday
+}
+
+function unfollow(event){
+    
+    fetch()
+}
+
+function follow(event){
+    console.log("THis works")
 }

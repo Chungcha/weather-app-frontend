@@ -24,7 +24,10 @@ function searchList() {
     return document.querySelector("#search-list")
 }
 
+let login
+
 document.addEventListener("DOMContentLoaded", ()=>{
+    login = false
 
     searchForm.addEventListener("submit", searchSubmitHandler)
 

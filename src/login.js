@@ -24,6 +24,7 @@ function postExistingUser(username) {
 }
 
 function renderUser(userObj){
+    login = userObj.id
     welcomeMessage(userObj)
     let favorites = userObj.favorites 
     if (userObj.favorites === undefined) {
@@ -75,7 +76,9 @@ function renderFavoriteLocation(fave) {
     let headerDiv = document.createElement("div")
     headerDiv.className = "header"
     headerDiv.dataset.woeid = fave.woeid
+    headerDiv.dataset.status = "favorited"
     headerDiv.innerText = `${fave.title}`
+    
     
     headerDiv.addEventListener("click", clickHandler)
     
