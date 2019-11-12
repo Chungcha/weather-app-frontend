@@ -109,7 +109,9 @@ function convertTemp(celcius){
 }
         
 function renderFiveDay(forecastArr){
+    fiveDayDiv.innerHTML = "";
     const fiveDayArr = forecastArr.consolidated_weather.slice(1,6)
+
     fiveDayArr.forEach(eachDay=>{
         
         let div = document.createElement("div")
@@ -130,7 +132,6 @@ function renderFiveDay(forecastArr){
         
         let day = document.createElement("div")
         day.classList.add("label")
-        //getting day
         day.innerText=`${getDay(eachDay.applicable_date)}`
 
         div.appendChild(day)
@@ -140,8 +141,17 @@ function renderFiveDay(forecastArr){
 }
 
 function getDay(dateString){
+    let monthNames = [
+        "January", "February", "March",
+        "April", "May", "June", "July",
+        "August", "September", "October",
+        "November", "December"
+      ];
     const dateArray = dateString.split("-")
-    let weekday = date.getDay();
-    debugger
-    return weekday
+    let newDateFormat = `${monthNames[dateArray[1]]} ${dateArray[2]}, ${dateArray[0]}`
+    let date = new Date (newDateFormat)
+    let weekday = date.getDay()
+    let options = { weekday: 'long'}
+    let newWeekday = new Intl.DateTimeFormat('en-US', options).format(date)
+    return newWeekday
 }
