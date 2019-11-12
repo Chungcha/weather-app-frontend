@@ -36,7 +36,7 @@ function clickHandler(event) {
     let favoriteId = event.target.dataset.favoriteId
     let woeid = event.target.dataset.woeid
     let favorited
-    let el = document.querySelector(`div.header[data-woeid='${event.target.dataset.woeid}'`)
+    let el = document.querySelector(`div.header[data-woeid='${event.target.dataset.woeid}']`)
     if (!!el== true){
         let favoriteId = el.dataset.favoriteId
         let woeid = el.dataset.woeid
