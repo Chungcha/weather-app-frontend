@@ -60,68 +60,71 @@ function postLocation(woeid, favorited, favoriteId) {
 }
 
 function renderForecast(forecastArr, favorited, favoriteId) {
-    
     weatherDiv.innerHTML = ""
 
-    let currentForecast = forecastArr.consolidated_weather[0] 
-
-    let div = document.createElement("div")
-    div.classList.add("column", "field")
+    let currentForecast = forecastArr.consolidated_weather[0]
 
     let subHeader = document.getElementById("subHeader")
     subHeader.innerText = `${forecastArr.title}, ${forecastArr.parent.title}`
 
     renderFavButton(forecastArr, favorited, favoriteId)
 
+    let statDiv = document.createElement("div") 
+    statDiv.className = "ui huge statistic"
+
+    let highLowLabelDiv = document.createElement("div")
+    highLowLabelDiv.className = "label"
+    highLowLabelDiv.innerHTML= `&#8593; ${convertTemp(currentForecast.max_temp)}° &#8595; ${convertTemp(currentForecast.min_temp)}°`
+
+    let valueDiv= document.createElement("div")
+    valueDiv.className = "value"
+
+    let imgDiv = document.createElement("div")
+    imgDiv.className = "ui statistic"
+
     let img = document.createElement("img")
-    img.id = "main-image"
-    img.src = `https://www.metaweather.com/static/img/weather/${currentForecast.weather_state_abbr}.svg`
+    img.className = "ui centered medium image"
+    img.src = `https://www.metaweather.com/static/img/weather/png/${currentForecast.weather_state_abbr}.png`
 
-    weatherDiv.append(div)
+    imgDiv.append(img)
 
-    div.append(img)
+    let text = document.createTextNode(`
+    ${convertTemp(currentForecast.the_temp)}°F`)
+
+    valueDiv.append(text)
+    
+    let labelDiv = document.createElement("div")
+    labelDiv.className = "label"
+    labelDiv.innerText=`${getDay(currentForecast.applicable_date)}`
+
+    statDiv.append(valueDiv, labelDiv)
+    fiveDayDiv.append(statDiv)
+
+    statDiv.append(highLowLabelDiv, valueDiv, labelDiv)
+    weatherDiv.append(imgDiv, statDiv)
 
     renderTemps(forecastArr)
 }
 
-function renderFavButton(forecastArr, favorited, favoriteId){
-    if (login && favorited) {
-        let span = document.createElement("span")
-        span.id = "heart"
-        span.dataset.woeid = forecastArr.woeid
-        span.dataset.favoriteId = favoriteId
-        span.innerText = " ♥"
-        subHeader.append(span)
-        span.addEventListener("click", unfollow)
-    } else if (login) {
-    let span = document.createElement("span")
-    span.id = "heart"
-    span.dataset.woeid = forecastArr.woeid
-    span.dataset.favoriteId = favoriteId
-    span.innerText = " ♡"
-    subHeader.append(span)
-    span.addEventListener("click", follow)
-    }
-}
-
 function renderTemps(forecastArr){
-    const todaysArr = forecastArr.consolidated_weather[0]
-    let div = document.createElement("div")
-    
-    div.innerHTML=`
-    <div class="statistic">
-        <div class="label">
-           &#8593; ${convertTemp(todaysArr.max_temp)}° &#8595; ${convertTemp(todaysArr.min_temp)}°
-        </div>
-        <div class="value">
-            ${convertTemp(todaysArr.the_temp)}°F
-         </div>
-        <div class="label">
-             ${todaysArr.weather_state_name}
-        </div>
-    </div>`
-    div.classList.add("column", "field", "ui", "statistics")
-    weatherDiv.append(div)
+    // const todaysArr = forecastArr.consolidated_weather[0]
+
+    // let div = document.createElement("div")
+    // div.innerHTML=`
+    // <div class="statistic">
+    //     <div class="label">
+    //        &#8593; ${convertTemp(todaysArr.max_temp)}° &#8595; ${convertTemp(todaysArr.min_temp)}°
+    //     </div>
+    //     <div class="value">
+    //         ${convertTemp(todaysArr.the_temp)}°F
+    //     </div>
+    //     <div class="label">
+    //          ${todaysArr.weather_state_name}
+    //     </div>
+    // </div>`
+    // div.className = "column field ui statistics"
+    // weatherDiv.append(div)
+
     renderFiveDay(forecastArr)
 }
 
@@ -130,36 +133,33 @@ function convertTemp(celcius){
 }
         
 function renderFiveDay(forecastArr){
+     
     fiveDayDiv.innerHTML = "";
     const fiveDayArr = forecastArr.consolidated_weather.slice(1,6)
 
     fiveDayArr.forEach(eachDay=>{
         
-        let div = document.createElement("div")
-        div.classList.add("card", "statistic")
+        let statDiv = document.createElement("div")
+        statDiv.className = "ui tiny statistic"
 
-        let value= document.createElement("div")
-        value.classList.add("value")
-        // value.innerText= `${convertTemp(eachDay.the_temp)}°F`
-        div.appendChild(value)
+        let valueDiv= document.createElement("div")
+        valueDiv.className = "value"
 
-        // let text = document.createTextNode(`${convertTemp(eachDay.the_temp)}°F`)
+        let img = document.createElement("img")
+        img.className = "ui circular inline image"
+        img.src= `https://www.metaweather.com/static/img/weather/png/${eachDay.weather_state_abbr}.png`
+
         let text = document.createTextNode(`
-        ${convertTemp(eachDay.the_temp)}°F
-      `)
+        ${convertTemp(eachDay.the_temp)}°F`)
 
-        let image=document.createElement("img")
-        image.classList.add("ui", "circular", "inline", "image")
-        image.src="https://www.metaweather.com/static/img/weather/ico/sn.ico"
-        value.appendChild(image)
-        value.appendChild(text)
+        valueDiv.append(img, text)
         
-        let day = document.createElement("div")
-        day.classList.add("label")
-        day.innerText=`${getDay(eachDay.applicable_date)}`
+        let labelDiv = document.createElement("div")
+        labelDiv.className = "label"
+        labelDiv.innerText=`${getDay(eachDay.applicable_date)}`
 
-        div.appendChild(day)
-        fiveDayDiv.appendChild(div)
+        statDiv.append(valueDiv, labelDiv)
+        fiveDayDiv.append(statDiv)
     })
     // remember to clear out the div everytime cards are generated
 }
@@ -178,6 +178,26 @@ function getDay(dateString){
     let options = { weekday: 'long'}
     let newWeekday = new Intl.DateTimeFormat('en-US', options).format(date)
     return newWeekday
+}
+
+function renderFavButton(forecastArr, favorited, favoriteId){
+    if (login && favorited) {
+        let span = document.createElement("span")
+        // span.id = "heart"
+        span.dataset.woeid = forecastArr.woeid
+        span.dataset.favoriteId = favoriteId
+        span.innerText = " ♥"
+        subHeader.append(span)
+        span.addEventListener("click", unfollow)
+    } else if (login) {
+    let span = document.createElement("span")
+    // span.id = "heart"
+    span.dataset.woeid = forecastArr.woeid
+    span.dataset.favoriteId = favoriteId
+    span.innerText = " ♡"
+    subHeader.append(span)
+    span.addEventListener("click", follow)
+    }
 }
 
 function unfollow(event){
