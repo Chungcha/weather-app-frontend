@@ -143,7 +143,10 @@ function renderFiveDay(forecastArr){
         // value.innerText= `${convertTemp(eachDay.the_temp)}°F`
         div.appendChild(value)
 
-        let text = document.createTextNode(`${convertTemp(eachDay.the_temp)}°F`)
+        // let text = document.createTextNode(`${convertTemp(eachDay.the_temp)}°F`)
+        let text = document.createTextNode(`
+        ${convertTemp(eachDay.the_temp)}°F
+      `)
 
         let image=document.createElement("img")
         image.classList.add("ui", "circular", "inline", "image")
