@@ -21,5 +21,5 @@ function fetchGeoLocation(position){
     })
     })
     .then(response => response.json())
-    .then(results => console.log(results))
+    .then(results => postLocation(results.woeid))
 }

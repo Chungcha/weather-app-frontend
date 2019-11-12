@@ -67,6 +67,8 @@ function renderForecast(forecastArr) {
     let subHeader = document.getElementById("subHeader")
     subHeader.innerText = `${forecastArr.title}, ${forecastArr.parent.title}`
 
+
+    // OWN FUNCTION? WITH LOGIN RENDER FAVS?
     let span = document.createElement("span")
     span.id = "heart"
     span.innerText = " ♡"
