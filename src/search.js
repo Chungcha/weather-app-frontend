@@ -34,74 +34,18 @@ function renderSearch(result){
 
 function clickHandler(event) {
     let favoriteId = event.target.dataset.favoriteId
-    let woeid = event.target.dataset.woeid 
+    let woeid = event.target.dataset.woeid
     let favorited
-    let el = document.querySelector(`div.header[data-woeid='${event.target.dataset.woeid}']`)
-    
-    debugger
+    let el = document.querySelector(div.header[data-woeid='${event.target.dataset.woeid}'])
     if (!!el== true){
         let favoriteId = el.dataset.favoriteId
-        let woeid = el.dataset.woeid 
+        let woeid = el.dataset.woeid
         favorited = true
         postLocation(woeid, favorited, favoriteId)
     } else if (!!el == false) {
-        
-    }
-
-
-
-
-
-
-
-
-
-    } else if (event.target.dataset.status==="favorited"){
-        favorited = true
-        postLocation(woeid, favorited, favoriteId)
-    } else {
         postLocation(woeid, favorited, favoriteId)
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//     searchList().innerHTML = ""
-
-//     if (el==true){
-//         clickFavs
-//     }
-//     // let favorited
-//     if (event.target.dataset.status==="favorited"){
-//         favorited = true
-//     }
-//     // let favoriteId = event.target.dataset.favoriteId
-//     let woeid = event.target.dataset.woeid 
-
-//     postLocation(woeid, favorited, favoriteId)
-}
-
-// function clickFavs(){
-//     postLocation(woeid, favorited, favoriteId)
-// }
+ }
 
 function postLocation(woeid, favorited, favoriteId) {
     fetch("http://localhost:3000/location", {
@@ -132,15 +76,26 @@ function renderForecast(forecastArr, favorited, favoriteId) {
 
     renderFavButton(forecastArr, favorited, favoriteId)
 
+    let statDiv = document.createElement("div") 
+    statDiv.className = "ui huge statistic"
+    statDiv.style = "padding-top: 96px;padding-bottom: 96px;"
+
+    let highLowLabelDiv = document.createElement("div")
+    highLowLabelDiv.className = "label"
+    highLowLabelDiv.innerHTML= `&#8593; ${convertTemp(currentForecast.max_temp)}° &#8595; ${convertTemp(currentForecast.min_temp)}°`
+
+    let valueDiv= document.createElement("div")
+    valueDiv.className = "value"
+
+    let imgDiv = document.createElement("div")
+    imgDiv.className = "ui statistic"
+
     let img = document.createElement("img")
-    img.id = "main-image"
-    img.src = `https://www.metaweather.com/static/img/weather/${currentForecast.weather_state_abbr}.svg`
+    img.className = "ui centered medium image"
+    img.src = `https://www.metaweather.com/static/img/weather/png/${currentForecast.weather_state_abbr}.png`
+    img.style = "padding-top: 7px; padding-bottom: 7px;"
 
-    weatherDiv.append(div)
 
-    div.append(img)
-
-    renderTemps(forecastArr)
 }
 
 function renderFavButton(forecastArr, favorited, favoriteId){
