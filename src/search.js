@@ -33,15 +33,19 @@ function renderSearch(result){
 }
 
 function clickHandler(event) {
-    searchList().innerHTML = ""
-    let favorited
-    if (event.target.dataset.status==="favorited"){
-        favorited = true
-    }
     let favoriteId = event.target.dataset.favoriteId
     let woeid = event.target.dataset.woeid 
-
-    postLocation(woeid, favorited, favoriteId)
+    let favorited
+    let el = document.querySelector(`div.header[data-woeid='${event.target.dataset.woeid}']`)
+    
+    if (!!el== true){
+        let favoriteId = el.dataset.favoriteId
+        let woeid = el.dataset.woeid 
+        favorited = true
+        postLocation(woeid, favorited, favoriteId)
+    } else if (!!el == false) {
+        postLocation(woeid, favorited, favoriteId)
+    }
 }
 
 function postLocation(woeid, favorited, favoriteId) {
@@ -208,6 +212,10 @@ function unfollow(event){
     fetch(`http://localhost:3000/favorites/${favId}`,{
         method: "DELETE"
     })
+    .then(response=>response.json())
+    .then(object=>{
+        event.target.addEventListener("click", follow)
+    })
 }
 
 function follow(event){
@@ -229,5 +237,6 @@ function follow(event){
     .then(response => response.json())
     .then(favorite => {
         event.target.innerText = " ♥"
+        event.target.addEventListener("click", unfollow)
         favoriteHandler(favorite, favorite.id)})
 }
