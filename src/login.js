@@ -74,7 +74,10 @@ function renderFavoriteLocation(fave) {
 
     let headerDiv = document.createElement("div")
     headerDiv.className = "header"
+    headerDiv.dataset.woeid = fave.woeid
     headerDiv.innerText = `${fave.title}`
+    
+    headerDiv.addEventListener("click", clickHandler)
     
     favorites.append(itemDiv)
     itemDiv.append(img, contentDiv)
