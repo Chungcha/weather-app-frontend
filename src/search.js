@@ -97,6 +97,23 @@ function renderForecast(forecastArr, favorited, favoriteId) {
     img.src = `https://www.metaweather.com/static/img/weather/png/${currentForecast.weather_state_abbr}.png`
     img.style = "padding-top: 7px; padding-bottom: 7px;"
 
+    imgDiv.append(img)
+
+    let text = document.createTextNode(`
+    ${convertTemp(currentForecast.the_temp)}°F`)
+
+    valueDiv.append(text)
+    
+    let labelDiv = document.createElement("div")
+    labelDiv.className = "label"
+    labelDiv.innerText=`${getDay(currentForecast.applicable_date)}`
+
+    statDiv.append(valueDiv, labelDiv)
+    fiveDayDiv.append(statDiv)
+
+    statDiv.append(highLowLabelDiv, valueDiv, labelDiv)
+    weatherDiv.append(imgDiv, statDiv)
+
     renderFiveDay(forecastArr)
 }
 
