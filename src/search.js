@@ -172,7 +172,7 @@ function getDay(dateString){
         "November", "December"
       ];
     const dateArray = dateString.split("-")
-    let newDateFormat = `${monthNames[dateArray[1]]} ${dateArray[2]}, ${dateArray[0]}`
+    let newDateFormat = `${monthNames[dateArray[1]-1]} ${dateArray[2]}, ${dateArray[0]}`
     let date = new Date (newDateFormat)
     let weekday = date.getDay()
     let options = { weekday: 'long'}
