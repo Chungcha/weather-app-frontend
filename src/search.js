@@ -63,6 +63,7 @@ function postLocation(woeid, favorited, favoriteId) {
 }
 
 function renderForecast(forecastArr, favorited, favoriteId) {
+    debugger
     weatherDiv.innerHTML = ""
 
     let currentForecast = forecastArr.consolidated_weather[0] 

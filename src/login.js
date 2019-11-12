@@ -1,7 +1,5 @@
 function logInSubmitHandler(event) {
     event.preventDefault()
-
-    userForm.innerHTML = ""
     
     let username = logInForm.username.value 
     
@@ -20,7 +18,14 @@ function postExistingUser(username) {
     })
     })
     .then(response => response.json())
-    .then(userObj => renderUser(userObj))
+    .then(userObj => {
+        if (userObj == null){
+            logInForm.username.value=""
+            alert ("User Not Found")
+        } else {
+        userForm.innerHTML = ""
+        renderUser(userObj)}})
+    
 }
 
 function renderUser(userObj){
