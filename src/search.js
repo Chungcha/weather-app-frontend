@@ -77,7 +77,7 @@ function renderForecast(forecastArr, favorited, favoriteId) {
 
     let statDiv = document.createElement("div") 
     statDiv.className = "ui huge statistic"
-    statDiv.style = "padding-top: 96px;padding-bottom: 96px;padding-left: 0px;padding-right: 205px;"
+    // statDiv.style = "padding-top: 96px;padding-bottom: 96px;padding-left: 0px;padding-right: 205px;"
 
     let highLowLabelDiv = document.createElement("div")
     highLowLabelDiv.className = "label"
@@ -88,13 +88,13 @@ function renderForecast(forecastArr, favorited, favoriteId) {
 
     let imgDiv = document.createElement("div")
     imgDiv.className = "ui statistic"
-    imgDiv.style = "padding-left: 83px;"
+    // imgDiv.style = "padding-left: 83px;"
 
 
     let img = document.createElement("img")
     img.className = "ui centered medium image"
     img.src = `https://www.metaweather.com/static/img/weather/png/${currentForecast.weather_state_abbr}.png`
-    img.style = "padding-top: 7px; padding-bottom: 7px;"
+    // img.style = "padding-top: 7px; padding-bottom: 7px;"
 
     imgDiv.append(img)
 
