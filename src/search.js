@@ -95,47 +95,6 @@ function renderForecast(forecastArr, favorited, favoriteId) {
     img.src = `https://www.metaweather.com/static/img/weather/png/${currentForecast.weather_state_abbr}.png`
     img.style = "padding-top: 7px; padding-bottom: 7px;"
 
-
-}
-
-function renderFavButton(forecastArr, favorited, favoriteId){
-    if (login && favorited) {
-        let span = document.createElement("span")
-        span.id = "heart"
-        span.dataset.woeid = forecastArr.woeid
-        span.dataset.favoriteId = favoriteId
-        span.innerText = " ♥"
-        subHeader.append(span)
-        span.addEventListener("click", unfollow)
-    } else if (login) {
-    let span = document.createElement("span")
-    span.id = "heart"
-    span.dataset.woeid = forecastArr.woeid
-    span.dataset.favoriteId = favoriteId
-    span.innerText = " ♡"
-    subHeader.append(span)
-    span.addEventListener("click", follow)
-    }
-}
-
-function renderTemps(forecastArr){
-    const todaysArr = forecastArr.consolidated_weather[0]
-    let div = document.createElement("div")
-    
-    div.innerHTML=`
-    <div class="statistic">
-        <div class="label">
-           &#8593; ${convertTemp(todaysArr.max_temp)}° &#8595; ${convertTemp(todaysArr.min_temp)}°
-        </div>
-        <div class="value">
-            ${convertTemp(todaysArr.the_temp)}°F
-         </div>
-        <div class="label">
-             ${todaysArr.weather_state_name}
-        </div>
-    </div>`
-    div.classList.add("column", "field", "ui", "statistics")
-    weatherDiv.append(div)
     renderFiveDay(forecastArr)
 }
 
@@ -192,6 +151,26 @@ function getDay(dateString){
     let options = { weekday: 'long'}
     let newWeekday = new Intl.DateTimeFormat('en-US', options).format(date)
     return newWeekday
+}
+
+function renderFavButton(forecastArr, favorited, favoriteId){
+    if (login && favorited) {
+        let span = document.createElement("span")
+        span.id = "heart"
+        span.dataset.woeid = forecastArr.woeid
+        span.dataset.favoriteId = favoriteId
+        span.innerText = " ♥"
+        subHeader.append(span)
+        span.addEventListener("click", unfollow)
+    } else if (login) {
+    let span = document.createElement("span")
+    span.id = "heart"
+    span.dataset.woeid = forecastArr.woeid
+    span.dataset.favoriteId = favoriteId
+    span.innerText = " ♡"
+    subHeader.append(span)
+    span.addEventListener("click", follow)
+    }
 }
 
 function unfollow(event){
