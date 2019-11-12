@@ -75,6 +75,7 @@ function renderForecast(forecastArr, favorited, favoriteId) {
 
     let statDiv = document.createElement("div") 
     statDiv.className = "ui huge statistic"
+    statDiv.style = "padding-top: 96px;padding-bottom: 96px;"
 
     let highLowLabelDiv = document.createElement("div")
     highLowLabelDiv.className = "label"
@@ -89,6 +90,8 @@ function renderForecast(forecastArr, favorited, favoriteId) {
     let img = document.createElement("img")
     img.className = "ui centered medium image"
     img.src = `https://www.metaweather.com/static/img/weather/png/${currentForecast.weather_state_abbr}.png`
+    img.style = "padding-top: 7px; padding-bottom: 7px;"
+
 
     imgDiv.append(img)
 
@@ -106,28 +109,6 @@ function renderForecast(forecastArr, favorited, favoriteId) {
 
     statDiv.append(highLowLabelDiv, valueDiv, labelDiv)
     weatherDiv.append(imgDiv, statDiv)
-
-    renderTemps(forecastArr)
-}
-
-function renderTemps(forecastArr){
-    // const todaysArr = forecastArr.consolidated_weather[0]
-
-    // let div = document.createElement("div")
-    // div.innerHTML=`
-    // <div class="statistic">
-    //     <div class="label">
-    //        &#8593; ${convertTemp(todaysArr.max_temp)}° &#8595; ${convertTemp(todaysArr.min_temp)}°
-    //     </div>
-    //     <div class="value">
-    //         ${convertTemp(todaysArr.the_temp)}°F
-    //     </div>
-    //     <div class="label">
-    //          ${todaysArr.weather_state_name}
-    //     </div>
-    // </div>`
-    // div.className = "column field ui statistics"
-    // weatherDiv.append(div)
 
     renderFiveDay(forecastArr)
 }
