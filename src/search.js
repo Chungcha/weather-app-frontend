@@ -64,7 +64,7 @@ function renderForecast(forecastArr, woeid) {
     subHeader.innerText = `${forecastArr.title}, ${forecastArr.parent.title}`
 
     let span = document.querySelector("#icon")
-    span.innerText = " ♡"
+    span.className = "like icon"
    
     renderFavButton(woeid, subHeader)
 
@@ -212,17 +212,16 @@ function renderFavButton(woeid, subHeader){
         let span = document.querySelector("#icon") 
         span.dataset.woeid = woeid
         if (favoriteDiv) {  
-            span.innerText = " ♥"
+            span.className = "like icon active"
         } 
         span.addEventListener("click", toggleHandler)
     }
 }
 
 function toggleHandler(event) { 
-    
     let woeId = event.target.dataset.woeid 
-    
-    if (event.target.innerText === "♥") { 
+     
+    if (event.target.className === "like icon active") { 
         let favoriteDiv = document.querySelector(`div.header[data-woeid='${woeId}']`)
         let favoriteId = favoriteDiv.dataset.favoriteId 
          
@@ -241,7 +240,7 @@ function unfavorite(event, favoriteDiv, favoriteId){
 
 function unrenderFavorite(event, favoriteDiv) { 
     favoriteDiv.parentElement.parentElement.remove() 
-    event.target.innerText = " ♡"
+    event.target.className = "like icon"
 }
 
 function favorite(event){ 
@@ -263,7 +262,7 @@ function favorite(event){
     .then(response => response.json())
     .then(favoriteObj => { 
         favoriteHandler(favoriteObj)
-        event.target.innerText = " ♥"
+        event.target.className = "like icon active"
     })
 }
         // event.target.addEventListener("click", unfollow)
