@@ -18,3 +18,7 @@
 #five-day-forcast{
     margin-top: 20px;
 }
+
+.nowrap {
+    white-space: nowrap ;
+}
