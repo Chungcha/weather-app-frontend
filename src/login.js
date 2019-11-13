@@ -94,12 +94,12 @@ function renderFavoriteLocation(fave, favoriteId) {
     itemDiv.append(img, contentDiv)
     contentDiv.append(headerDiv)
 
-    $(document).ready(function(){
-        $('div#favorites div.item').on('click', function() {
-            $('div#favorites div.item').removeClass('active');
-            $(this).addClass('active');
-        });             
-    });
+    // $(document).ready(function(){
+    //     $('div#favorites div.item').on('click', function() {
+    //         $('div#favorites div.item').removeClass('active');
+    //         $(this).addClass('active');
+    //     });             
+    // });
 }
 
 function renderLogOutButton() {

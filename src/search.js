@@ -137,7 +137,6 @@ function renderForecast(forecastArr, woeid) {
     renderFavButton(woeid, subHeader)
     renderFiveDay(forecastArr)
     renderSunBar(forecastArr)
-    renderDetails(forecastArr)
 }
 
 function convertTemp(celcius){
@@ -146,7 +145,7 @@ function convertTemp(celcius){
         
 function renderFiveDay(forecastArr){
     fiveDayDiv.innerHTML = "";
-    const fiveDayArr = forecastArr.consolidated_weather.slice(1,6)
+    const fiveDayArr = forecastArr.consolidated_weather.slice(0,5)
 
     fiveDayArr.forEach(eachDay=>{
         
@@ -171,9 +170,18 @@ function renderFiveDay(forecastArr){
         day.innerText=`${getDay(eachDay.applicable_date)}`
 
         div.appendChild(day)
+        div.addEventListener("click", renderDay)
         fiveDayDiv.appendChild(div)
     })
-   
+    fiveDayDiv.firstChild.classList.add("active")
+
+    $(document).ready(function(){
+        $('div#five-day-forcast div.item').on('click', function() {
+            $('div#five-day-forcast div.item').removeClass('active');
+            $(this).addClass('active');
+        });             
+    });
+
 }
 
 function getDay(dateString){
@@ -305,6 +313,6 @@ function renderSunBar(forecastArr){
 //     return finalTime
 // }
 
-function renderDetails (forecastArr){
-    detailsDiv
+function renderDay(){
+    console.log("THis works")
 }
