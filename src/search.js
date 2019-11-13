@@ -294,55 +294,68 @@ function favorite(event){
 
 // }
 
-// function convertTime(timeString){
-//     let hour 
-//     let period 
-//     if (timeString.slice(0,2) > 12) {
-//         hour = timeString.slice(0,2) - 12
-//     } else {
-//         hour = timeString.slice(0,2)
-//     }
-//     let minute = timeString.slice(3,5)
-//     if (timeString.slice(0,2) < 12) {
-//         period = "a.m."
-//     } else {
-//         period = "p.m."
-//     }
-//     let finalTime = `${hour}:${minute} ${period}`
-//     return finalTime
-// }
+function convertTime(timeString){
+    let hour 
+    let period 
+    if (timeString.slice(0,2) > 12) {
+        hour = timeString.slice(0,2) - 12
+    } else {
+        hour = timeString.slice(0,2)
+    }
+    let minute = timeString.slice(3,5)
+    if (timeString.slice(0,2) < 12) {
+        period = "a.m."
+    } else {
+        period = "p.m."
+    }
+    let finalTime = `${hour}:${minute} ${period}`
+    return finalTime
+}
 
 function renderSunBar(forecastArr){
     sunBar.innerHTML = ""
     let sunrise = forecastArr.sun_rise.split("T")[1].slice(0,5)
     let sunset = forecastArr.sun_set.split("T")[1].slice(0,5)
     let time = forecastArr.time.split("T")[1].slice(0,5)
-    
-    let percentage = Math.floor((sunrise.slice(0,2) / (sunset.slice(0,2)) * 100))
+    let percentage = Math.floor(((time.slice(0,2)-sunrise.slice(0,2))/(sunset.slice(0,2)-sunrise.slice(0,2))) * 100)
 
     sunBar.classList.add("ui", "yellow", "progress")
 
     let progress = document.createElement("div")
     progress.classList.add("bar")
+
+    // let topLabel = document.createElement("div")
+
+    // let sunRiseIcon = document.createElement("i")
+    // sunRiseIcon.className="sun icon"
+    // sunRiseIcon.setAttribute("style", "float: left;")
+
+    // let sunSetIcon = document.createElement("i")
+    // sunSetIcon.className = "moon icon"
+    // sunSetIcon.setAttribute("style", "float:right;")
+
+    let label = document.createElement("div")
+    label.classList.add("label")
+
+    let sunRiseSpan = document.createElement("span")
+    sunRiseSpan.setAttribute("style", "float: left;")
+    sunRiseSpan.innerText = convertTime(sunrise)
+
+    let sunSetSpan = document.createElement("span")
+    sunSetSpan.setAttribute("style", "float:right;")
+    sunSetSpan.innerText= convertTime(sunset)
     
+    // topLabel.appendChild(sunRiseIcon)
+    // topLabel.appendChild(sunSetIcon)
+    label.append(sunRiseSpan, sunSetSpan)
+    // sunBar.appendChild(topLabel)
     sunBar.appendChild(progress)
-
-
+    sunBar.appendChild(label)
 
     $('#sunrise-sunset').progress({
     label: '<i class="sun icon">',
     percent: percentage
     });
-
-
-    // bar.setAttribute("style", "width: 100%")
-    // bar.setAttribute("style", "background-color: #ddd");
-    // sunBar.appendChild(bar)
-    
-    // let progress = document.createElement("div")
-    // bar.appendChild(progress)
-    // progress.innerHTML=`<i class="moon icon" style="float:right;"></i>`
-    // progress.style=`width: ${percentage}%;background-color: yellow; height:30px;`
 }
 
 
