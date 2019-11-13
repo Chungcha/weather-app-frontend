@@ -33,21 +33,11 @@ function renderSearch(result){
 }
 
 function clickHandler(event) {
-    let favoriteId = event.target.dataset.favoriteId
     let woeid = event.target.dataset.woeid
-    let favorited
-    let el = document.querySelector(`div.header[data-woeid='${event.target.dataset.woeid}']`)
-    if (!!el== true){
-        let favoriteId = el.dataset.favoriteId
-        let woeid = el.dataset.woeid
-        favorited = true
-        postLocation(woeid, favorited, favoriteId)
-    } else if (!!el == false) {
-        postLocation(woeid, favorited, favoriteId)
-    }
+    postLocation(woeid)
  }
 
-function postLocation(woeid, favorited, favoriteId) {
+function postLocation(woeid) {
     fetch("http://localhost:3000/location", {
         method: "POST",
         headers: {
@@ -59,10 +49,10 @@ function postLocation(woeid, favorited, favoriteId) {
     })
     })
     .then(response => response.json())
-    .then(forecastArr => renderForecast(forecastArr, favorited, favoriteId))
+    .then(forecastArr => renderForecast(forecastArr, woeid))
 }
 
-function renderForecast(forecastArr, favorited, favoriteId) {
+function renderForecast(forecastArr, woeid) {
     weatherDiv.innerHTML = ""
 
     let currentForecast = forecastArr.consolidated_weather[0] 
@@ -73,11 +63,11 @@ function renderForecast(forecastArr, favorited, favoriteId) {
     let subHeader = document.getElementById("subHeader")
     subHeader.innerText = `${forecastArr.title}, ${forecastArr.parent.title}`
 
-    renderFavButton(forecastArr, favorited, favoriteId)
-
+    let span = document.querySelector("#icon")
+    span.innerText = " ♡"
+   
     let statDiv = document.createElement("div") 
     statDiv.className = "ui huge statistic"
-    statDiv.style = "padding-top: 96px;padding-bottom: 96px;padding-left: 0px;padding-right: 205px;"
 
     let highLowLabelDiv = document.createElement("div")
     highLowLabelDiv.className = "label"
@@ -88,13 +78,10 @@ function renderForecast(forecastArr, favorited, favoriteId) {
 
     let imgDiv = document.createElement("div")
     imgDiv.className = "ui statistic"
-    imgDiv.style = "padding-left: 83px;"
-
 
     let img = document.createElement("img")
     img.className = "ui centered medium image"
     img.src = `https://www.metaweather.com/static/img/weather/png/${currentForecast.weather_state_abbr}.png`
-    img.style = "padding-top: 7px; padding-bottom: 7px;"
 
     imgDiv.append(img)
 
@@ -113,6 +100,7 @@ function renderForecast(forecastArr, favorited, favoriteId) {
     statDiv.append(highLowLabelDiv, valueDiv, labelDiv)
     weatherDiv.append(imgDiv, statDiv)
 
+    renderFavButton(woeid, subHeader)
     renderFiveDay(forecastArr)
 }
 
@@ -131,17 +119,14 @@ function renderFiveDay(forecastArr){
 
         let value= document.createElement("div")
         value.classList.add("value")
-        // value.innerText= `${convertTemp(eachDay.the_temp)}°F`
         div.appendChild(value)
 
-        // let text = document.createTextNode(`${convertTemp(eachDay.the_temp)}°F`)
         let text = document.createTextNode(`
-        ${convertTemp(eachDay.the_temp)}°F
-      `)
+        ${convertTemp(eachDay.the_temp)}°F`)
 
-        let image=document.createElement("img")
-        image.classList.add("ui", "circular", "inline", "image")
-        image.src="https://www.metaweather.com/static/img/weather/ico/sn.ico"
+        let image = document.createElement("img")
+        image.className = "ui circular inline image"
+        image.src=`https://www.metaweather.com/static/img/weather/png/${eachDay.weather_state_abbr}.png`
         value.appendChild(image)
         value.appendChild(text)
         
@@ -152,7 +137,7 @@ function renderFiveDay(forecastArr){
         div.appendChild(day)
         fiveDayDiv.appendChild(div)
     })
-    // remember to clear out the div everytime cards are generated
+   
 }
 
 function getDay(dateString){
@@ -171,59 +156,67 @@ function getDay(dateString){
     return newWeekday
 }
 
-function renderFavButton(forecastArr, favorited, favoriteId){
-    if (login && favorited) {
-        let span = document.createElement("span")
-        span.id = "heart"
-        span.dataset.woeid = forecastArr.woeid
-        span.dataset.favoriteId = favoriteId
-        span.innerText = " ♥"
-        subHeader.append(span)
-        span.addEventListener("click", unfollow)
-    } else if (login) {
-    let span = document.createElement("span")
-    span.id = "heart"
-    span.dataset.woeid = forecastArr.woeid
-    span.dataset.favoriteId = favoriteId
-    span.innerText = " ♡"
-    subHeader.append(span)
-    span.addEventListener("click", follow)
+function renderFavButton(woeid, subHeader){
+    let favoriteDiv = document.querySelector(`div.header[data-woeid='${woeid}']`)
+    let favoriteId 
+
+    if (favoriteDiv) {
+        favoriteId = favoriteDiv.dataset.favoriteId 
+    }
+
+    if (login) {
+        let span = document.querySelector("#icon") 
+        span.dataset.woeid = woeid
+        if (favoriteDiv) {  
+            span.innerText = " ♥"
+        } 
+        span.addEventListener("click", () => {  
+            toggleHandler(event)
+        })
     }
 }
 
-function unfollow(event){
-    event.target.innerText= " ♡"
-    const favId = event.target.dataset.favoriteId
-    let el = document.querySelector(`div.header[data-favorite-id='${favId}']`)
-    el.parentElement.parentElement.remove()
-    fetch(`http://localhost:3000/favorites/${favId}`,{
-        method: "DELETE"
-    })
-    .then(response=>response.json())
-    .then(object=>{
-        event.target.addEventListener("click", follow)
-    })
+function toggleHandler(event) { 
+    let woeId = event.target.dataset.woeid 
+
+    if (event.target.innerText === "♥") { 
+        let favoriteDiv = document.querySelector(`div.header[data-woeid='${woeId}']`)
+        let favoriteId = favoriteDiv.dataset.favoriteId 
+        unfavorite(event, favoriteDiv, favoriteId)
+    } else { 
+        favorite(event)
+    }
 }
 
-function follow(event){
-    const userId = login
-    const woeId = event.target.dataset.woeid
-    const favId = event.target.dataset.favoriteId
+function unfavorite(event, favoriteDiv, favoriteId){   
+    fetch(`http://localhost:3000/favorites/${favoriteId}`, {
+        method: "DELETE"
+    }).then(() => unrenderFavorite(event, favoriteDiv))
+}
 
-    fetch("http://localhost:3000/favorites",{
+function unrenderFavorite(event, favoriteDiv) { 
+    favoriteDiv.parentElement.parentElement.remove() 
+    event.target.innerText = " ♡"
+}
+
+function favorite(event){ 
+    let userId = login
+    let woeId = event.target.dataset.woeid 
+
+    fetch("http://localhost:3000/favorites", {
         method: "POST",
         headers:{
             'Content-Type': 'application/json',
             "Accept": "application/json"
         },
         body: JSON.stringify({
-            userId: userId,
-            woeId: woeId
+            user_id: userId,
+            location_id: woeId
         })
     })
     .then(response => response.json())
-    .then(favorite => {
+    .then(favoriteObj => { 
+        favoriteHandler(favoriteObj)
         event.target.innerText = " ♥"
-        event.target.addEventListener("click", unfollow)
-        favoriteHandler(favorite, favorite.id)})
+    })
 }
