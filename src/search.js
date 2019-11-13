@@ -130,7 +130,7 @@ function renderFiveDay(forecastArr){
     fiveDayArr.forEach(eachDay=>{
         
         let div = document.createElement("div")
-        div.classList.add("card", "statistic")
+        div.classList.add("card", "statistic", "item")
 
         let value= document.createElement("div")
         value.classList.add("value")

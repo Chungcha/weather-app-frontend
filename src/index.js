@@ -47,6 +47,9 @@ document.addEventListener("DOMContentLoaded", ()=>{
     getLocation()
 
 })
+$(document).ready(function(){
+    
+  });
 
 
 
