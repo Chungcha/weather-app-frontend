@@ -66,6 +66,37 @@ function renderForecast(forecastArr, woeid) {
     let span = document.querySelector("#icon")
     span.innerText = " ♡"
    
+    renderFavButton(woeid, subHeader)
+
+    let mainStatDiv = document.createElement("div")
+    mainStatDiv.className = "ui huge statistic"
+
+    let detailedStatsDiv = document.createElement("div")
+    detailedStatsDiv.innerHTML=`<h4 class="ui horizontal divider header">
+    <i class="bar th list icon"></i>
+    Details
+  </h4>
+  <table class="ui definition table">
+    <tbody>
+      <tr>
+        <td class="two wide column">Humidity</td>
+        <td class="ui right aligned segment">${currentForecast.humidity}%</td>
+      </tr>
+      <tr>
+        <td>Visibility</td>
+        <td class="ui right aligned segment">${Math.round(currentForecast.visibility)} mi</td>
+      </tr>
+      <tr>
+        <td>Air Pressure</td>
+        <td class="ui right aligned segment">${currentForecast.air_pressure} mbar</td>
+      </tr>
+      <tr>
+        <td>Wind Speed</td>
+        <td class="ui right aligned segment">${Math.round(currentForecast.wind_speed)} mph</td>
+      </tr>
+    </tbody>
+  </table>`
+
     let statDiv = document.createElement("div") 
     statDiv.className = "ui huge statistic"
 
@@ -98,10 +129,15 @@ function renderForecast(forecastArr, woeid) {
     fiveDayDiv.append(statDiv)
 
     statDiv.append(highLowLabelDiv, valueDiv, labelDiv)
-    weatherDiv.append(imgDiv, statDiv)
+    weatherDiv.append(imgDiv, mainStatDiv)
+    mainStatDiv.appendChild(statDiv)
+    mainStatDiv.appendChild(detailedStatsDiv)
+
 
     renderFavButton(woeid, subHeader)
     renderFiveDay(forecastArr)
+    renderSunBar(forecastArr)
+    renderDetails(forecastArr)
 }
 
 function convertTemp(celcius){
@@ -115,7 +151,7 @@ function renderFiveDay(forecastArr){
     fiveDayArr.forEach(eachDay=>{
         
         let div = document.createElement("div")
-        div.classList.add("card", "statistic")
+        div.classList.add("card", "statistic", "item")
 
         let value= document.createElement("div")
         value.classList.add("value")
@@ -221,4 +257,54 @@ function favorite(event){
         favoriteHandler(favoriteObj)
         event.target.innerText = " ♥"
     })
+}
+        // event.target.addEventListener("click", unfollow)
+        // favoriteHandler(favorite, favorite.id)})
+// }
+
+function renderSunBar(forecastArr){
+    sunBar.innerHTML = ""
+    let sunrise = forecastArr.sun_rise.split("T")[1].slice(0,5)
+    let sunset = forecastArr.sun_set.split("T")[1].slice(0,5)
+    let time = forecastArr.time.split("T")[1].slice(0,5)
+    
+    let percentage = Math.floor((sunrise.slice(0,2) / (sunset.slice(0,2)) * 100))
+
+    let bar = document.createElement("div")
+    // myDiv.setAttribute("style", "border-color:#FFFFFF;");
+    bar.innerHTML=`<span"float:left;><i class="sun icon">${sunrise}</i></span>
+    
+    <span style="float:right;">${sunset}<i class="moon icon"
+    ></i></span>`
+    bar.setAttribute("style", "width: 100%")
+    bar.setAttribute("style", "background-color: #ddd");
+    sunBar.appendChild(bar)
+    
+    let progress = document.createElement("div")
+    bar.appendChild(progress)
+    progress.innerHTML=`<i class="moon icon" style="float:right;"></i>`
+    progress.style=`width: ${percentage}%;background-color: yellow; height:30px;`
+
+}
+
+// function convertTime(timeString){
+//     let hour 
+//     let period 
+//     if (timeString.slice(0,2) > 12) {
+//         hour = timeString.slice(0,2) - 12
+//     } else {
+//         hour = timeString.slice(0,2)
+//     }
+//     let minute = timeString.slice(3,5)
+//     if (timeString.slice(0,2) < 12) {
+//         period = "a.m."
+//     } else {
+//         period = "p.m."
+//     }
+//     let finalTime = `${hour}:${minute} ${period}`
+//     return finalTime
+// }
+
+function renderDetails (forecastArr){
+    detailsDiv
 }

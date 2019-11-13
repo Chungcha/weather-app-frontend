@@ -64,7 +64,9 @@ function postFavoriteLocation(favorite) {
     })
     })
     .then(response => response.json())
-    .then(fave => renderFavoriteLocation(fave, favoriteId))
+    .then(fave => {
+        
+        renderFavoriteLocation(fave, favoriteId)})
 }
 
 function renderFavoriteLocation(fave, favoriteId) { 
@@ -73,6 +75,7 @@ function renderFavoriteLocation(fave, favoriteId) {
 
     let img = document.createElement("img")
     img.className = "ui avatar image"
+    
     let forecastImg = fave.consolidated_weather[0].weather_state_abbr
     img.src =  `https://www.metaweather.com/static/img/weather/${forecastImg}.svg`
 
@@ -90,6 +93,13 @@ function renderFavoriteLocation(fave, favoriteId) {
     favorites.append(itemDiv)
     itemDiv.append(img, contentDiv)
     contentDiv.append(headerDiv)
+
+    $(document).ready(function(){
+        $('div#favorites div.item').on('click', function() {
+            $('div#favorites div.item').removeClass('active');
+            $(this).addClass('active');
+        });             
+    });
 }
 
 function renderLogOutButton() {
