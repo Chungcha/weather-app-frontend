@@ -71,6 +71,7 @@ function postFavoriteLocation(favorite) {
 
 function renderFavoriteLocation(fave, favoriteId) { 
     let itemDiv = document.createElement("div")
+    itemDiv.dataset.woeid = fave.woeid
     itemDiv.className = "item"
 
     let img = document.createElement("img")
@@ -88,18 +89,18 @@ function renderFavoriteLocation(fave, favoriteId) {
     headerDiv.dataset.favoriteId = favoriteId 
     headerDiv.innerText = `${fave.title}`
     
-    headerDiv.addEventListener("click", clickHandler)
+    itemDiv.addEventListener("click", clickHandler)
     
     favorites.append(itemDiv)
     itemDiv.append(img, contentDiv)
     contentDiv.append(headerDiv)
 
-    // $(document).ready(function(){
-    //     $('div#favorites div.item').on('click', function() {
-    //         $('div#favorites div.item').removeClass('active');
-    //         $(this).addClass('active');
-    //     });             
-    // });
+    $(document).ready(function(){
+        $('div#favorites div.item').on('click', function() {
+            $('div#favorites div.item').removeClass('active');
+            $(this).addClass('active');
+        });             
+    });
 }
 
 function renderLogOutButton() {
