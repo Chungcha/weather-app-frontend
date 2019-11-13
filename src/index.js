@@ -20,6 +20,8 @@ const sunBar = document.getElementById("sunrise-sunset")
 
 const detailsDiv = document.getElementById("details")
 
+let weatherArr
+
 
 function main() {
     return document.querySelector("main")

@@ -53,6 +53,9 @@ function postLocation(woeid) {
 }
 
 function renderForecast(forecastArr, woeid) {
+    
+    weatherArr = forecastArr
+
     weatherDiv.innerHTML = ""
 
     let currentForecast = forecastArr.consolidated_weather[0] 
@@ -142,15 +145,20 @@ function renderForecast(forecastArr, woeid) {
 function convertTemp(celcius){
     return `${ Math.round(celcius*(9/5)+32)}`
 }
-        
+
+let i
+
 function renderFiveDay(forecastArr){
     fiveDayDiv.innerHTML = "";
     const fiveDayArr = forecastArr.consolidated_weather.slice(0,5)
+
+    i = 0
 
     fiveDayArr.forEach(eachDay=>{
         
         let div = document.createElement("div")
         div.classList.add("card", "statistic", "item")
+        div.dataset.index = i++
 
         let value= document.createElement("div")
         value.classList.add("value")
@@ -360,6 +368,84 @@ function renderSunBar(forecastArr){
 
 
 
-function renderDay(){
-    console.log("THis works")
+function renderDay(event){
+    let index = event.target.parentElement.dataset.index
+
+    weatherDiv.innerHTML = ""
+    let forecastArr = weatherArr
+    let currentForecast = weatherArr.consolidated_weather[index] 
+
+    let div = document.createElement("div")
+    div.classList.add("column", "field")
+
+    let subHeader = document.getElementById("subHeader")
+    subHeader.innerText = `${forecastArr.title}, ${forecastArr.parent.title}`
+
+    let span = document.querySelector("#icon")
+    span.className = "like icon"
+
+    let mainStatDiv = document.createElement("div")
+    mainStatDiv.className = "ui huge statistic"
+
+    let detailedStatsDiv = document.createElement("div")
+    detailedStatsDiv.innerHTML=`<h4 class="ui horizontal divider header">
+    <i class="bar th list icon"></i>
+    Details
+  </h4>
+  <table class="ui definition table">
+    <tbody>
+      <tr>
+        <td class="two wide column">Humidity</td>
+        <td class="ui right aligned segment">${currentForecast.humidity}%</td>
+      </tr>
+      <tr>
+        <td>Visibility</td>
+        <td class="ui right aligned segment">${Math.round(currentForecast.visibility)} mi</td>
+      </tr>
+      <tr>
+        <td>Air Pressure</td>
+        <td class="ui right aligned segment">${currentForecast.air_pressure} mbar</td>
+      </tr>
+      <tr>
+        <td>Wind Speed</td>
+        <td class="ui right aligned segment">${Math.round(currentForecast.wind_speed)} mph</td>
+      </tr>
+    </tbody>
+  </table>`
+
+    let statDiv = document.createElement("div") 
+    statDiv.className = "ui huge statistic"
+
+    let highLowLabelDiv = document.createElement("div")
+    highLowLabelDiv.className = "label"
+    highLowLabelDiv.innerHTML= `&#8593; ${convertTemp(currentForecast.max_temp)}° &#8595; ${convertTemp(currentForecast.min_temp)}°`
+
+    let valueDiv= document.createElement("div")
+    valueDiv.className = "value"
+
+    let imgDiv = document.createElement("div")
+    imgDiv.className = "ui statistic"
+
+    let img = document.createElement("img")
+    img.className = "ui centered medium image"
+    img.src = `https://www.metaweather.com/static/img/weather/png/${currentForecast.weather_state_abbr}.png`
+
+    imgDiv.append(img)
+
+    let text = document.createTextNode(`
+    ${convertTemp(currentForecast.the_temp)}°F`)
+
+    valueDiv.append(text)
+    
+    let labelDiv = document.createElement("div")
+    labelDiv.className = "label"
+    labelDiv.innerText=`${getDay(currentForecast.applicable_date)}`
+
+    statDiv.append(valueDiv, labelDiv)
+    fiveDayDiv.append(statDiv)
+
+    statDiv.append(highLowLabelDiv, valueDiv, labelDiv)
+    weatherDiv.append(imgDiv, mainStatDiv)
+    mainStatDiv.appendChild(statDiv)
+    mainStatDiv.appendChild(detailedStatsDiv)
 }
