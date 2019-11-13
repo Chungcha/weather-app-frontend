@@ -46,6 +46,7 @@ function favoriteHandler(favorite) {
 }
 
 function postFavoriteLocation(favorite) {
+     
     let favoriteId = favorite.id 
     fetch("http://localhost:3000/location", {
         method: "POST",
@@ -61,8 +62,7 @@ function postFavoriteLocation(favorite) {
     .then(fave => renderFavoriteLocation(fave, favoriteId))
 }
 
-function renderFavoriteLocation(fave, favoriteId) {
-    debugger 
+function renderFavoriteLocation(fave, favoriteId) { 
     let itemDiv = document.createElement("div")
     itemDiv.className = "item"
 
@@ -79,7 +79,6 @@ function renderFavoriteLocation(fave, favoriteId) {
     headerDiv.dataset.woeid = fave.woeid
     headerDiv.dataset.favoriteId = favoriteId 
     headerDiv.innerText = `${fave.title}`
-    
     
     headerDiv.addEventListener("click", clickHandler)
     

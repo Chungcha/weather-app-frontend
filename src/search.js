@@ -170,20 +170,21 @@ function renderFavButton(woeid, subHeader){
         if (favoriteDiv) {  
             span.innerText = " ♥"
         } 
-        span.addEventListener("click", () => {  
-            toggleHandler(event)
-        })
+        span.addEventListener("click", toggleHandler)
     }
 }
 
 function toggleHandler(event) { 
+    
     let woeId = event.target.dataset.woeid 
-
+    
     if (event.target.innerText === "♥") { 
         let favoriteDiv = document.querySelector(`div.header[data-woeid='${woeId}']`)
         let favoriteId = favoriteDiv.dataset.favoriteId 
+         
         unfavorite(event, favoriteDiv, favoriteId)
     } else { 
+         
         favorite(event)
     }
 }
@@ -200,6 +201,7 @@ function unrenderFavorite(event, favoriteDiv) {
 }
 
 function favorite(event){ 
+      
     let userId = login
     let woeId = event.target.dataset.woeid 
 
