@@ -76,6 +76,35 @@ function renderForecast(forecastArr, favorited, favoriteId) {
 
     renderFavButton(forecastArr, favorited, favoriteId)
 
+    let mainStatDiv = document.createElement("div")
+    mainStatDiv.className = "ui huge statistic"
+
+    let detailedStatsDiv = document.createElement("div")
+    detailedStatsDiv.innerHTML=`<h4 class="ui horizontal divider header">
+    <i class="bar th list icon"></i>
+    Details
+  </h4>
+  <table class="ui definition table">
+    <tbody>
+      <tr>
+        <td class="two wide column">Humidity</td>
+        <td class="ui right aligned segment">${currentForecast.humidity}%</td>
+      </tr>
+      <tr>
+        <td>Visibility</td>
+        <td class="ui right aligned segment">${Math.round(currentForecast.visibility)} mi</td>
+      </tr>
+      <tr>
+        <td>Air Pressure</td>
+        <td class="ui right aligned segment">${currentForecast.air_pressure} mbar</td>
+      </tr>
+      <tr>
+        <td>Wind Speed</td>
+        <td class="ui right aligned segment">${Math.round(currentForecast.wind_speed)} mph</td>
+      </tr>
+    </tbody>
+  </table>`
+
     let statDiv = document.createElement("div") 
     statDiv.className = "ui huge statistic"
     // statDiv.style = "padding-top: 96px;padding-bottom: 96px;padding-left: 0px;padding-right: 205px;"
@@ -112,7 +141,10 @@ function renderForecast(forecastArr, favorited, favoriteId) {
     fiveDayDiv.append(statDiv)
 
     statDiv.append(highLowLabelDiv, valueDiv, labelDiv)
-    weatherDiv.append(imgDiv, statDiv)
+    weatherDiv.append(imgDiv, mainStatDiv)
+    mainStatDiv.appendChild(statDiv)
+    mainStatDiv.appendChild(detailedStatsDiv)
+
 
     renderFiveDay(forecastArr)
     renderSunBar(forecastArr)

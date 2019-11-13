@@ -64,7 +64,9 @@ function postFavoriteLocation(favorite, favoriteId) {
     })
     })
     .then(response => response.json())
-    .then(fave => renderFavoriteLocation(fave, favoriteId))
+    .then(fave => {
+        
+        renderFavoriteLocation(fave, favoriteId)})
 }
 
 function renderFavoriteLocation(fave, favoriteId) {
@@ -73,6 +75,7 @@ function renderFavoriteLocation(fave, favoriteId) {
 
     let img = document.createElement("img")
     img.className = "ui avatar image"
+    
     let forecastImg = fave.consolidated_weather[0].weather_state_abbr
     img.src =  `https://www.metaweather.com/static/img/weather/${forecastImg}.svg`
 
