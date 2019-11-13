@@ -160,7 +160,7 @@ function renderFiveDay(forecastArr){
         ${convertTemp(eachDay.the_temp)}°F`)
 
         let image = document.createElement("img")
-        image.className = "ui circular inline image"
+        image.className = "ui inline image"
         image.src=`https://www.metaweather.com/static/img/weather/png/${eachDay.weather_state_abbr}.png`
         value.appendChild(image)
         value.appendChild(text)
