@@ -16,6 +16,11 @@ let favoritesColumn = document.querySelector("#favorites-column")
 
 const fiveDayDiv = document.getElementById("five-day-forcast")
 
+const sunBar = document.getElementById("sunrise-sunset")
+
+const detailsDiv = document.getElementById("details")
+
+
 function main() {
     return document.querySelector("main")
 }

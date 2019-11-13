@@ -63,7 +63,7 @@ function postLocation(woeid, favorited, favoriteId) {
 }
 
 function renderForecast(forecastArr, favorited, favoriteId) {
-    debugger
+    
     weatherDiv.innerHTML = ""
 
     let currentForecast = forecastArr.consolidated_weather[0] 
@@ -115,6 +115,8 @@ function renderForecast(forecastArr, favorited, favoriteId) {
     weatherDiv.append(imgDiv, statDiv)
 
     renderFiveDay(forecastArr)
+    renderSunBar(forecastArr)
+    renderDetails(forecastArr)
 }
 
 function convertTemp(celcius){
@@ -227,4 +229,51 @@ function follow(event){
         event.target.innerText = " ♥"
         event.target.addEventListener("click", unfollow)
         favoriteHandler(favorite, favorite.id)})
+}
+
+function renderSunBar(forecastArr){
+    sunBar.innerHTML = ""
+    let sunrise = forecastArr.sun_rise.split("T")[1].slice(0,5)
+    let sunset = forecastArr.sun_set.split("T")[1].slice(0,5)
+    let time = forecastArr.time.split("T")[1].slice(0,5)
+    
+    let percentage = Math.floor((sunrise.slice(0,2) / (sunset.slice(0,2)) * 100))
+
+    let bar = document.createElement("div")
+    // myDiv.setAttribute("style", "border-color:#FFFFFF;");
+    bar.innerHTML=`<span"float:left;><i class="sun icon">${sunrise}</i></span>
+    
+    <span style="float:right;">${sunset}<i class="moon icon"
+    ></i></span>`
+    bar.setAttribute("style", "width: 100%")
+    bar.setAttribute("style", "background-color: #ddd");
+    sunBar.appendChild(bar)
+    
+    let progress = document.createElement("div")
+    bar.appendChild(progress)
+    progress.innerHTML=`<i class="moon icon" style="float:right;"></i>`
+    progress.style=`width: ${percentage}%;background-color: yellow; height:30px;`
+
+}
+
+// function convertTime(timeString){
+//     let hour 
+//     let period 
+//     if (timeString.slice(0,2) > 12) {
+//         hour = timeString.slice(0,2) - 12
+//     } else {
+//         hour = timeString.slice(0,2)
+//     }
+//     let minute = timeString.slice(3,5)
+//     if (timeString.slice(0,2) < 12) {
+//         period = "a.m."
+//     } else {
+//         period = "p.m."
+//     }
+//     let finalTime = `${hour}:${minute} ${period}`
+//     return finalTime
+// }
+
+function renderDetails (forecastArr){
+    detailsDiv
 }
