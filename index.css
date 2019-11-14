@@ -1,3 +1,6 @@
+.cursor {
+
+}
 
 .hidden {
     display: none
@@ -21,4 +24,12 @@
 
 .nowrap {
     white-space: nowrap ;
+}
+
+#search-list:hover {
+    cursor: pointer
+}
+
+#fave-list-cursor:hover {
+    cursor: pointer
 }
