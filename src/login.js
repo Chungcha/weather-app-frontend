@@ -29,6 +29,7 @@ function postExistingUser(username) {
 }
 
 function renderUser(userObj){
+    // document.getElementById("favorites").style.marginTop = "60px";
     login = userObj.id
     welcomeMessage(userObj)
     let favorites = userObj.favorites 

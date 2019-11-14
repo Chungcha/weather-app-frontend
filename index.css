@@ -10,7 +10,7 @@
     margin-top: 110px;
     margin-left: 90px;
     margin-right: 90px;
-    box-shadow: 10px 10px 	#999999
+    box-shadow: 10px 10px #999999
 }
 
 #main-image {
@@ -32,4 +32,13 @@
 
 #fave-list-cursor:hover {
     cursor: pointer
+}
+
+#favorites{
+    margin-top: 66px;
+}
+
+div .ten.wide.column{
+    padding-left: 5px;
+    padding-right: 5px;
 }
