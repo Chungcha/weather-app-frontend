@@ -325,8 +325,9 @@ function renderSunBar(forecastArr){
     let sunrise = forecastArr.sun_rise.split("T")[1].slice(0,5)
     let sunset = forecastArr.sun_set.split("T")[1].slice(0,5)
     let time = forecastArr.time.split("T")[1].slice(0,5)
-    let percentage = Math.floor(((time.slice(0,2)-sunrise.slice(0,2))/(sunset.slice(0,2)-sunrise.slice(0,2))) * 100)
-
+    let percentage
+    percentage = Math.floor(((time.slice(0,2)-sunrise.slice(0,2))/(sunset.slice(0,2)-sunrise.slice(0,2))) * 100)
+    sunBar.classList.remove("grey")
     sunBar.classList.add("ui", "yellow", "progress")
 
     let progress = document.createElement("div")
@@ -347,12 +348,26 @@ function renderSunBar(forecastArr){
 
     let sunRiseSpan = document.createElement("span")
     sunRiseSpan.setAttribute("style", "float: left;")
-    sunRiseSpan.innerText = convertTime(sunrise)
+    sunRiseSpan.innerText = convertTime(sunrise).slice(1,9)
 
     let sunSetSpan = document.createElement("span")
     sunSetSpan.setAttribute("style", "float:right;")
     sunSetSpan.innerText= convertTime(sunset)
-    
+
+    if (percentage > 100 || percentage < 0){
+        sunBar.classList.remove("yellow")
+        sunBar.classList.add("grey")
+
+        sunRiseSpan.setAttribute("style", "float: right;")
+        sunSetSpan.setAttribute("style", "float: left;")
+
+        
+        percentage = Math.abs(Math.floor(((time.slice(0,2)-sunset.slice(0,2))/(sunrise.slice(0,2)-sunset.slice(0,2))) * 100))
+        
+    }
+
+
+
     // topLabel.appendChild(sunRiseIcon)
     // topLabel.appendChild(sunSetIcon)
     label.append(sunRiseSpan, sunSetSpan)
@@ -361,9 +376,9 @@ function renderSunBar(forecastArr){
     sunBar.appendChild(label)
 
     $('#sunrise-sunset').progress({
-    label: '<i class="sun icon">',
-    percent: percentage
-    });
+        label: '<i class="sun icon">',
+        percent: percentage
+        });
 }
 
 
