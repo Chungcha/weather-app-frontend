@@ -36,7 +36,6 @@ function renderUser(userObj){
         console.log("no favorites yet")
     } else {
         favorites.forEach(favorite => favoriteHandler(favorite))
-        favoritesColumn.style.display = "inline-block"
     }
     renderLogOutButton()
 }
@@ -69,7 +68,9 @@ function postFavoriteLocation(favorite) {
         renderFavoriteLocation(fave, favoriteId)})
 }
 
-function renderFavoriteLocation(fave, favoriteId) { 
+function renderFavoriteLocation(fave, favoriteId) { ///
+    favoritesColumn.className = "three wide column"
+
     let itemDiv = document.createElement("div")
     itemDiv.dataset.woeid = fave.woeid
     itemDiv.className = "item"

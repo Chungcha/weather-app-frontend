@@ -1,6 +1,13 @@
+/* body {
+    background: url("./images/teletubbies.jpg")
+} */
 
-
+/* 
 #favorites-column {
+    display: none
+} */
+
+.hidden {
     display: none
 }
 
