@@ -323,12 +323,19 @@ function convertTime(timeString){
 }
 
 function renderSunBar(forecastArr){
+    document.getElementById("background").style.backgroundImage=''
+
+    mainCont.classList.remove("day")
+    mainCont.classList.remove("night")
     sunBar.innerHTML = ""
+
+    document.getElementById("background").style.backgroundImage = `url("images/kumiko-shimizu-lNxMcE8mvIM-unsplash.jpg")`;
+    document.getElementById("background").style.backgroundSize = "cover";
+
     let sunrise = forecastArr.sun_rise.split("T")[1].slice(0,5)
     let sunset = forecastArr.sun_set.split("T")[1].slice(0,5)
     let time = forecastArr.time.split("T")[1].slice(0,5)
-    let percentage
-    percentage = Math.floor(((time.slice(0,2)-sunrise.slice(0,2))/(sunset.slice(0,2)-sunrise.slice(0,2))) * 100)
+    let percentage = Math.floor(((time.slice(0,2)-sunrise.slice(0,2))/(sunset.slice(0,2)-sunrise.slice(0,2))) * 100)
     sunBar.classList.remove("grey")
     sunBar.classList.add("ui", "yellow", "progress")
 
@@ -356,17 +363,35 @@ function renderSunBar(forecastArr){
     sunSetSpan.setAttribute("style", "float:right;")
     sunSetSpan.innerText= convertTime(sunset)
 
-    if (percentage > 100 || percentage < 0){
+    if (time.slice(0,2) <= sunrise.slice(0,2) || time.slice(0,2) >= sunset.slice(0,2)){
+
         sunBar.classList.remove("yellow")
         sunBar.classList.add("grey")
+
+        document.getElementById("background").style.backgroundImage = `url("images/vincentiu-solomon-ln5drpv_ImI-unsplash.jpg")`
+
+        document.getElementById("background").style.backgroundSize = "cover";
 
         sunRiseSpan.setAttribute("style", "float: right;")
         sunSetSpan.setAttribute("style", "float: left;")
 
-        
-        percentage = Math.abs(Math.floor(((time.slice(0,2)-sunset.slice(0,2))/(sunrise.slice(0,2)-sunset.slice(0,2))) * 100))
-        
+        // (time.slice(0,2)-sunset.slice(0,2))/((24-sunset.slice(0,2))+ sunrise.slice(0,2)) 
     }
+
+
+
+    // if (num > 100 || num < 0){
+    //     sunBar.classList.remove("yellow")
+    //     sunBar.classList.add("grey")
+
+    //     sunRiseSpan.setAttribute("style", "float: right;")
+    //     sunSetSpan.setAttribute("style", "float: left;")
+
+        
+    //     percentage = Math.abs(Math.floor(((time.slice(0,2)-sunset.slice(0,2))/(sunrise.slice(0,2)-sunset.slice(0,2))) * 100))
+    // } else {
+    //     percentage = = Math.floor(((time.slice(0,2)-sunrise.slice(0,2))/(sunset.slice(0,2)-sunrise.slice(0,2))) * 100)
+    // }
 
 
 

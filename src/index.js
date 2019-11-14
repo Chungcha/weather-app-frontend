@@ -1,5 +1,7 @@
 const searchForm = document.querySelector("#search-form")
 
+const mainCont = document.getElementById("background")
+
 const userForm = document.querySelector("#user-form")
 
 const newUserForm = document.querySelector("#newuser-form")
