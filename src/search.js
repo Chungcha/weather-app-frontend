@@ -54,6 +54,7 @@ function postLocation(woeid) {
 
 function renderForecast(forecastArr, woeid) {
     weatherDiv.innerHTML = ""
+    weatherDiv.className = "ui two segment statistics"
 
     let currentForecast = forecastArr.consolidated_weather[0] 
 
@@ -145,6 +146,7 @@ function convertTemp(celcius){
         
 function renderFiveDay(forecastArr){
     fiveDayDiv.innerHTML = "";
+    fiveDayDiv.className = "animated bottom attached tabular menu ui five tiny statistics"
     const fiveDayArr = forecastArr.consolidated_weather.slice(0,5)
 
     fiveDayArr.forEach(eachDay=>{
