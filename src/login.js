@@ -74,6 +74,7 @@ function renderFavoriteLocation(fave, favoriteId) { ///
     let itemDiv = document.createElement("div")
     itemDiv.dataset.woeid = fave.woeid
     itemDiv.className = "item"
+    itemDiv.id = "fave-list-cursor"
 
     let img = document.createElement("img")
     img.className = "ui avatar image"

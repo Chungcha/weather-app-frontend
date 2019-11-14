@@ -1,16 +1,6 @@
-/* body#background.day {
-    background: url("images/kumiko-shimizu-lNxMcE8mvIM-unsplash.jpg");
-    background-size: cover;
-  }
+.cursor {
 
-body#background.night {
-background:url("images/vincentiu-solomon-ln5drpv_ImI-unsplash.jpg");
-background-size: cover;
-}   */
-
-#favorites-column {
-    display: none
-} */
+}
 
 .hidden {
     display: none
@@ -34,4 +24,12 @@ background-size: cover;
 
 .nowrap {
     white-space: nowrap ;
+}
+
+#search-list:hover {
+    cursor: pointer
+}
+
+#fave-list-cursor:hover {
+    cursor: pointer
 }
